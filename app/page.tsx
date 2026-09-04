@@ -1,13 +1,32 @@
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 import dbConnect from "@/db/connect";
-import Chemical from "@/db/Chemical";
+import Chemical from "@/db/models/Chemical";
+import SignOutButton from "@/components/SignOutButton";
 
 export default async function InventoryPage() {
   await dbConnect();
   const chemicals = await Chemical.find({});
 
+  const session = await auth();
+
+  // If there is no session or the user is not an admin, redirect to login
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  if (!session || (session.user as any)?.role !== "admin") {
+    redirect("/login");
+  }
+
   return (
     <main className="p-8">
       <h1 className="text-2xl font-bold mb-4">Chemical Inventory</h1>
+      <div className="flex justify-end mb-4">
+        <SignOutButton />
+      </div>
+      <p className="mb-6 text-gray-700 mt-5">
+        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any*/}
+        Welcome, {(session.user as any)?.name}! Here is the list of chemicals in
+        the inventory:
+      </p>
       <ul className="space-y-4">
         {chemicals.map((chem) => (
           <li
