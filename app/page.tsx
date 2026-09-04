@@ -17,7 +17,11 @@ export default async function InventoryPage() {
             <h2 className="font-semibold text-lg">
               {chem.name} ({chem.formula})
             </h2>
-            <p>
+            State:{" "}
+            <span className="px-2.5 py-0.5 text-s italic font-medium bg-gray-200 rounded-full capitalize w-20 text-center">
+              {chem.state}
+            </span>
+            <p className="text-gray-600">
               Stock: {chem.stockQuantity} {chem.unit}
             </p>
             <p className="text-gray-600">{chem.description}</p>
