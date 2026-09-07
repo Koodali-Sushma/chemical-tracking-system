@@ -5,9 +5,7 @@ import Chemical from "@/db/models/Chemical";
 import SignOutButton from "@/components/SignOutButton";
 
 export default async function InventoryPage() {
-  await dbConnect();
-  const chemicals = await Chemical.find({});
-
+  // check for authentication first before rendering the page
   const session = await auth();
 
   // If there is no session or the user is not an admin, redirect to login
@@ -15,6 +13,10 @@ export default async function InventoryPage() {
   if (!session || (session.user as any)?.role !== "admin") {
     redirect("/login");
   }
+
+  // Connect to the database and fetch chemicals
+  await dbConnect();
+  const chemicals = await Chemical.find({});
 
   return (
     <main className="p-8">
