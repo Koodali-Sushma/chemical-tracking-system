@@ -8,15 +8,16 @@ export async function POST(request: Request) {
   try {
     const session = await auth();
     const user = session?.user as { role?: string; email?: string } | undefined;
+    const userEmail = user?.email?.toLowerCase().trim();
 
-    if (!user || user.role !== "scientist") {
+    if (!session || !user || user.role !== "scientist") {
       return NextResponse.json(
         { error: "Only scientists can dispense chemicals." },
         { status: 403 },
       );
     }
 
-    if (!user.email) {
+    if (!userEmail) {
       return NextResponse.json(
         { error: "User email is missing." },
         { status: 401 },
@@ -58,7 +59,7 @@ export async function POST(request: Request) {
 
     await DispenseLog.create({
       chemicalFormula: chemical.formula,
-      scientistEmail: user.email,
+      scientistEmail: userEmail,
       amountDrawn: amount,
     });
 
