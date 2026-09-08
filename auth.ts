@@ -15,34 +15,43 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         if (!credentials?.email || !credentials?.password) {
           return null;
         }
+        try {
+          await dbConnect();
+          // Normalize email to prevent case-sensitivity or whitespace issues
+          const email = String(credentials.email).toLowerCase().trim();
+          // Find the user in MongoDB
+          const user = await User.findOne({ email });
 
-        await dbConnect();
+          if (!user) {
+            return null;
+          }
 
-        // Find the user in MongoDB
-        const user = await User.findOne({ email: credentials.email });
+          // Simple password check (Note: use bcrypt to hash and compare in production)
+          const isPasswordValid = credentials.password === user.password;
 
-        if (!user) {
+          if (!isPasswordValid) {
+            return null;
+          }
+
+          const allowedRoles = ["admin", "scientist", "lab_technician"];
+
+          if (!allowedRoles.includes(user.role)) {
+            throw new Error(
+              "Access restricted to authorized laboratory personnel only.",
+            );
+          }
+
+          // Return user object with role data attached to the session
+          return {
+            id: user._id.toString(),
+            name: user.name,
+            email: user.email,
+            role: user.role,
+          };
+        } catch (error) {
+          console.error("Authorization error:", error);
           return null;
         }
-
-        // Simple password check (Note: use bcrypt to hash and compare in production)
-        const isPasswordValid = credentials.password === user.password;
-
-        if (!isPasswordValid) {
-          return null;
-        }
-        //currently only admin users can log in
-        if (user.role !== "admin") {
-          throw new Error("Access restricted to administrators only.");
-        }
-
-        // Return user object with role data attached to the session
-        return {
-          id: user._id.toString(),
-          name: user.name,
-          email: user.email,
-          role: user.role,
-        };
       },
     }),
   ],

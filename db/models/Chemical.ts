@@ -3,7 +3,8 @@ import mongoose, { Schema, Document, Model } from "mongoose";
 export interface IChemical extends Document {
   name: string;
   formula: string;
-  stockQuantity: number;
+  mainStock: number;
+  nodeStock: number;
   unit: string;
   state: "solid" | "liquid" | "gas";
   description: string;
@@ -11,8 +12,9 @@ export interface IChemical extends Document {
 
 const ChemicalSchema = new Schema<IChemical>({
   name: { type: String, required: true },
-  formula: { type: String, required: true },
-  stockQuantity: { type: Number, required: true },
+  formula: { type: String, required: true, unique: true },
+  mainStock: { type: Number, required: true, default: 20 },
+  nodeStock: { type: Number, required: true, default: 5, max: 5 },
   unit: { type: String, required: true },
   state: {
     type: String,
