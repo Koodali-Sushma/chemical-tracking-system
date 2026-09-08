@@ -3,25 +3,39 @@ import { redirect } from "next/navigation";
 import dbConnect from "@/db/connect";
 import Chemical from "@/db/models/Chemical";
 import SignOutButton from "@/components/SignOutButton";
+import Link from "next/link";
 
 export default async function InventoryPage() {
   // check for authentication first before rendering the page
   const session = await auth();
 
-  // If there is no session or the user is not an admin, redirect to login
+  if (!session) {
+    redirect("/login");
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  if (!session || (session.user as any)?.role !== "admin") {
+  const role = (session.user as any)?.role;
+  const allowedRoles = ["admin", "scientist", "lab_technician"];
+
+  if (!allowedRoles.includes(role)) {
     redirect("/login");
   }
 
   // Connect to the database and fetch chemicals
   await dbConnect();
+
   const chemicals = await Chemical.find({});
 
   return (
     <main className="p-8">
       <h1 className="text-2xl font-bold mb-4">Chemical Inventory</h1>
       <div className="flex justify-end mb-4">
+        <Link
+          href="/simulator"
+          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm font-medium"
+        >
+          Simulator
+        </Link>
         <SignOutButton />
       </div>
       <p className="mb-6 text-gray-700 mt-5">
@@ -43,7 +57,10 @@ export default async function InventoryPage() {
               {chem.state}
             </span>
             <p className="text-gray-600">
-              Stock: {chem.stockQuantity} {chem.unit}
+              Main-Stock: {chem.mainStock} {chem.unit}
+            </p>
+            <p className="text-gray-600">
+              Node-Stock: {chem.nodeStock} {chem.unit}
             </p>
             <p className="text-gray-600">{chem.description}</p>
           </li>

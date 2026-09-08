@@ -24,13 +24,7 @@ export default function LoginPage() {
       });
 
       if (result?.error) {
-        // If NextAuth passes the custom error message, use it.
-        // Otherwise, fall back to a default invalid credentials message.
-        if (result.error === "Access restricted to administrators only.") {
-          setError("Access restricted to administrators only.");
-        } else {
-          setError("Invalid email or password");
-        }
+        setError("Invalid email or password");
       } else {
         router.push("/");
         router.refresh();
