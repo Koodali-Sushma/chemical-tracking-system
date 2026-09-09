@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="text-emerald-400">
+  <!-- Test tube outline -->
+  <path d="M9 2h6M10 2v5l-4 9a2 2 0 0 0 1.8 3h8.4a2 2 0 0 0 1.8-3l-4-9V2" />
+  <!-- Telemetry pulse wave inside -->
+  <path d="M8 14h2l1.5-3 2 5 1.5-3h2" stroke="#38bdf8" stroke-width="1.5" />
+</svg>

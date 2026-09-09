@@ -7,17 +7,6 @@ import SignOutButton from "@/components/SignOutButton";
 import SimulatorClient from "@/components/SimulatorClient";
 
 export default async function SimulatorPage() {
-  //   // 🔓 TEMPORARY BYPASS: Mock session for testing
-  //   const session = {
-  //     user: {
-  //       name: "Lab Technician 1",
-  //       email: "lab_technician1@lab.com",
-  //       role: "lab_technician",
-  //     },
-  //   };
-  //   const role = session.user.role;
-  //   const email = session.user.email;
-
   const session = await auth();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const role = (session?.user as any)?.role;
