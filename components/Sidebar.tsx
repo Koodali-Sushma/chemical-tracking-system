@@ -19,45 +19,54 @@ export default function Sidebar({ role }: { role: string }) {
           </Link>
         </div>
         <nav className="space-y-4">
-          <Link
-            href="/"
-            className="text-gray-600 hover:text-white block py-2 px-3 rounded hover:bg-gray-800 transition border-b border-gray-800"
-          >
-            Dashboard
-          </Link>
-
           {role === "admin" && (
             <>
               <Link
-                href="/inventory"
+                href="/"
                 className="text-gray-600 hover:text-white block py-2 px-3 rounded hover:bg-gray-800 transition border-b border-gray-800"
               >
-                Chemical Inventory
+                Stocks
               </Link>
               <Link
-                href="/users"
+                href="/admin/access-requests"
                 className="text-gray-600 hover:text-white block py-2 px-3 rounded hover:bg-gray-800 transition border-b border-gray-800"
               >
-                Manage Users
+                Access Requests
               </Link>
+              {/* <Link
+                href="/"
+                className="text-gray-600 hover:text-white block py-2 px-3 rounded hover:bg-gray-800 transition border-b border-gray-800"
+              >
+                Usage Reports
+              </Link> */}
             </>
           )}
 
-          {(role === "scientist" || role === "lab_technician") && (
+          {role === "scientist" && (
+            <>
+              <Link
+                href="/request-access"
+                className="text-gray-600 hover:text-white block py-2 px-3 rounded hover:bg-gray-800 transition border-b border-gray-800"
+              >
+                Request Access
+              </Link>
+
+              <Link
+                href="/logs"
+                className="text-gray-600 hover:text-white block py-2 px-3 rounded hover:bg-gray-800 transition border-b border-gray-800"
+              >
+                Usage Reports
+              </Link>
+            </>
+          )}
+          {role === "lab_technician" && (
             <Link
-              href=""
+              href="/"
               className="text-gray-600 hover:text-white block py-2 px-3 rounded hover:bg-gray-800 transition border-b border-gray-800"
             >
-              Request Access
+              Stocks
             </Link>
           )}
-
-          <Link
-            href="/logs"
-            className="text-gray-600 hover:text-white block py-2 px-3 rounded hover:bg-gray-800 transition border-b border-gray-800"
-          >
-            Usage Reports
-          </Link>
         </nav>
       </div>
 
