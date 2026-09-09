@@ -73,15 +73,17 @@ export default function Sidebar({ role }: { role: string }) {
       <div className="text-s text-gray-400 border-t border-gray-800 pt-4">
         <div className="flex justify-between mb-4">
           <SignOutButton />
-          <Link href="/simulator" target="_blank" rel="noopener noreferrer">
-            <Image
-              src="/simulator.svg"
-              alt="Simulator Icon"
-              width={70}
-              height={40}
-              className="inline-block mr-2"
-            />
-          </Link>
+          {role !== "admin" && (
+            <Link href="/simulator" target="_blank" rel="noopener noreferrer">
+              <Image
+                src="/simulator.svg"
+                alt="Simulator Icon"
+                width={70}
+                height={40}
+                className="inline-block mr-2"
+              />
+            </Link>
+          )}
         </div>
         Logged in as:{" "}
         <span className="capitalize text-gray-600 italic font-semibold">

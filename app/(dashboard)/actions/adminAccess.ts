@@ -52,3 +52,30 @@ export async function rejectAccess(requestId: string) {
 
   revalidatePath("/admin/access-requests");
 }
+
+export async function revokeAccess(userEmail: string, formula: string) {
+  const session = await auth();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const role = (session?.user as any)?.role;
+
+  if (!session || role !== "admin") {
+    throw new Error("Unauthorized");
+  }
+
+  await dbConnect();
+  const normalizedEmail = userEmail.toLowerCase().trim();
+
+  // 1. Remove formula from scientistaccess array
+  await ScientistAccess.findOneAndUpdate(
+    { scientistEmail: normalizedEmail },
+    { $pull: { chemicalFormulas: formula } },
+  );
+
+  // 2. Delete or reset the access request record so they can request again if needed
+  await AccessRequest.deleteOne({
+    userEmail: normalizedEmail,
+    formula,
+  });
+
+  revalidatePath("/admin/access-requests");
+}

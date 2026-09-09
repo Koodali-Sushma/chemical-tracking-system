@@ -3,6 +3,7 @@ import { auth } from "@/auth";
 import dbConnect from "@/db/connect";
 import Chemical from "@/db/models/Chemical";
 import DispenseLog from "@/db/DispenseLog";
+import ScientistAccess from "@/db/models/ScientistAccess";
 
 export async function POST(request: Request) {
   try {
@@ -36,18 +37,19 @@ export async function POST(request: Request) {
     }
 
     await dbConnect();
+    const accessRecord = await ScientistAccess.findOne({
+      scientistEmail: userEmail,
+    }).lean();
+    const allowedFormulas = accessRecord?.chemicalFormulas ?? [];
 
     const chemical = await Chemical.findOneAndUpdate(
       {
         _id: chemicalId,
         nodeStock: { $gte: amount },
+        formula: { $in: allowedFormulas },
       },
-      {
-        $inc: { nodeStock: -amount },
-      },
-      {
-        new: true,
-      },
+      { $inc: { nodeStock: -amount } },
+      { new: true },
     );
 
     if (!chemical) {

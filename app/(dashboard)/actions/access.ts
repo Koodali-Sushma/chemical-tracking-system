@@ -3,6 +3,7 @@ import { auth } from "@/auth";
 import dbConnect from "@/db/connect";
 import AccessRequest from "@/db/models/AccessRequest";
 import { revalidatePath } from "next/cache";
+import ScientistAccess from "@/db/models/ScientistAccess";
 
 export async function requestChemicalAccess(formula: string) {
   const session = await auth();
@@ -13,6 +14,17 @@ export async function requestChemicalAccess(formula: string) {
   }
 
   await dbConnect();
+  const normalizedEmail = email.toLowerCase().trim();
+
+  // Check if scientist already has access in ScientistAccess collection
+  const existingAccess = await ScientistAccess.findOne({
+    scientistEmail: normalizedEmail,
+    chemicalFormulas: formula,
+  });
+
+  if (existingAccess) {
+    throw new Error("You already have access to this chemical.");
+  }
 
   await AccessRequest.findOneAndUpdate(
     { userEmail: email.toLowerCase().trim(), formula },

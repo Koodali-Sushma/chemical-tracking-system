@@ -4,6 +4,7 @@ import { useState } from "react";
 import {
   grantAccess,
   rejectAccess,
+  revokeAccess,
 } from "@/app/(dashboard)/actions/adminAccess";
 
 interface RequestItem {
@@ -40,6 +41,17 @@ export default function AdminAccessTable({
       await rejectAccess(id);
     } catch (error) {
       console.error("Failed to reject access:", error);
+    } finally {
+      setLoadingId(null);
+    }
+  };
+
+  const handleRevoke = async (email: string, formula: string, id: string) => {
+    setLoadingId(id);
+    try {
+      await revokeAccess(email, formula);
+    } catch (error) {
+      console.error("Failed to revoke access:", error);
     } finally {
       setLoadingId(null);
     }
@@ -87,6 +99,7 @@ export default function AdminAccessTable({
                   {req.formula}
                 </td>
                 <td className="p-4 border-r border-gray-200">
+                  {/* Status Badge Column */}
                   <span
                     className={`px-2.5 py-0.5 text-xs font-semibold rounded-full uppercase ${
                       req.status === "approved"
@@ -100,6 +113,7 @@ export default function AdminAccessTable({
                   </span>
                 </td>
                 <td className="p-4 text-center">
+                  {/* Actions Column */}
                   {req.status === "pending" ? (
                     <div className="flex items-center justify-center gap-2">
                       <button
@@ -119,6 +133,16 @@ export default function AdminAccessTable({
                         {isLoading ? "Saving..." : "Reject"}
                       </button>
                     </div>
+                  ) : req.status === "approved" ? (
+                    <button
+                      onClick={() =>
+                        handleRevoke(req.userEmail, req.formula, req._id)
+                      }
+                      disabled={isLoading}
+                      className="px-3 py-1 bg-orange-600 text-white rounded-md text-xs font-medium hover:bg-orange-700 transition disabled:opacity-50"
+                    >
+                      {isLoading ? "Processing..." : "Revoke Access"}
+                    </button>
                   ) : (
                     <span className="text-xs text-gray-400 italic">
                       Resolved

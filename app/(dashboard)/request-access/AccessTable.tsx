@@ -20,9 +20,11 @@ interface RequestItem {
 export default function AccessTable({
   chemicals,
   userRequests,
+  activeFormulas,
 }: {
   chemicals: Chemical[];
   userRequests: RequestItem[];
+  activeFormulas: string[];
 }) {
   const [loadingFormula, setLoadingFormula] = useState<string | null>(null);
 
@@ -30,6 +32,7 @@ export default function AccessTable({
   const requestMap = new Map(
     userRequests.map((req) => [req.formula, req.status]),
   );
+  const ownedSet = new Set(activeFormulas);
 
   const handleAction = async (formula: string, isRequested: boolean) => {
     setLoadingFormula(formula);
@@ -59,6 +62,7 @@ export default function AccessTable({
         </thead>
         <tbody className="divide-y divide-gray-200 text-sm">
           {chemicals.map((chem) => {
+            const hasAccess = ownedSet.has(chem.formula);
             const status = requestMap.get(chem.formula);
             const isPending = status === "pending";
             const isLoading = loadingFormula === chem.formula;
@@ -72,9 +76,9 @@ export default function AccessTable({
                   </span>
                 </td>
                 <td className="p-4 text-center">
-                  {status === "approved" ? (
+                  {hasAccess ? (
                     <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold">
-                      Approved
+                      Access Granted
                     </span>
                   ) : (
                     <button

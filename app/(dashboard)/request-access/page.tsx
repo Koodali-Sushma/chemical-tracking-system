@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import dbConnect from "@/db/connect";
 import Chemical from "@/db/models/Chemical"; // Adjust to your actual chemical model path
 import AccessRequest from "@/db/models/AccessRequest";
+import ScientistAccess from "@/db/models/ScientistAccess";
 import AccessTable from "./AccessTable";
 
 export default async function RequestAccessPage() {
@@ -20,6 +21,7 @@ export default async function RequestAccessPage() {
   }
 
   await dbConnect();
+  const normalizedEmail = email.toLowerCase().trim();
 
   // Fetch all chemicals from the database
   const chemicalsRaw = await Chemical.find({}).lean();
@@ -29,15 +31,18 @@ export default async function RequestAccessPage() {
     formula: c.formula,
   }));
 
-  // Fetch existing requests for this specific user
-  const userRequestsRaw = await AccessRequest.find({
-    userEmail: email.toLowerCase().trim(),
-  }).lean();
+  // Fetch pending/rejected requests and active granted access
+  const [userRequestsRaw, scientistAccessDoc] = await Promise.all([
+    AccessRequest.find({ userEmail: normalizedEmail }).lean(),
+    ScientistAccess.findOne({ scientistEmail: normalizedEmail }).lean(),
+  ]);
 
   const userRequests = userRequestsRaw.map((r) => ({
     formula: r.formula,
     status: r.status,
   }));
+
+  const activeFormulas = scientistAccessDoc?.chemicalFormulas || [];
 
   return (
     <div className="p-8 max-w-4xl mx-auto">
@@ -56,7 +61,11 @@ export default async function RequestAccessPage() {
           No chemicals found in the database.
         </div>
       ) : (
-        <AccessTable chemicals={chemicals} userRequests={userRequests} />
+        <AccessTable
+          chemicals={chemicals}
+          userRequests={userRequests}
+          activeFormulas={activeFormulas}
+        />
       )}
     </div>
   );
