@@ -4,7 +4,6 @@ import dbConnect from "@/db/connect";
 import DispenseLog from "@/db/DispenseLog";
 
 export default async function UsageReportPage() {
-  // check for authentication first before rendering the page
   const session = await auth();
   const email = session?.user?.email;
 
@@ -22,7 +21,6 @@ export default async function UsageReportPage() {
 
   await dbConnect();
 
-  // Fetch only the logs belonging to the active user's email (normalized)
   const logs = await DispenseLog.find({
     scientistEmail: email.toLowerCase().trim(),
   })

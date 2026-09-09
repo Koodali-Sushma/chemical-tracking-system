@@ -17,14 +17,12 @@ export default async function AdminAccessRequestsPage() {
 
   await dbConnect();
 
-  // 1. Fetch all requests, chemicals, and users to map names
   const [requestsRaw, chemicals, users] = await Promise.all([
     AccessRequest.find({}).sort({ createdAt: -1 }).lean(),
     Chemical.find({}).lean(),
     User.find({}).lean(),
   ]);
 
-  // Create lookup maps for quick O(1) resolution
   const chemicalMap = new Map(chemicals.map((c) => [c.formula, c.name]));
   const userMap = new Map(
     users.map((u) => [u.email?.toLowerCase().trim(), u.name || u.email]),
@@ -34,8 +32,8 @@ export default async function AdminAccessRequestsPage() {
     const normalizedEmail = req.userEmail.toLowerCase().trim();
     return {
       _id: req._id.toString(),
-      userEmail: req.userEmail, // kept for the grant action handler
-      scientistName: userMap.get(normalizedEmail) || req.userEmail, // Fallback to email if name not found
+      userEmail: req.userEmail,
+      scientistName: userMap.get(normalizedEmail) || req.userEmail,
       chemicalName: chemicalMap.get(req.formula) || "Unknown Chemical",
       formula: req.formula,
       status: req.status,

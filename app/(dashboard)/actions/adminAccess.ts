@@ -65,13 +65,11 @@ export async function revokeAccess(userEmail: string, formula: string) {
   await dbConnect();
   const normalizedEmail = userEmail.toLowerCase().trim();
 
-  // 1. Remove formula from scientistaccess array
   await ScientistAccess.findOneAndUpdate(
     { scientistEmail: normalizedEmail },
     { $pull: { chemicalFormulas: formula } },
   );
 
-  // 2. Delete or reset the access request record so they can request again if needed
   await AccessRequest.deleteOne({
     userEmail: normalizedEmail,
     formula,

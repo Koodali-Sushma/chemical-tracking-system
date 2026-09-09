@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import dbConnect from "@/db/connect";
-import Chemical from "@/db/models/Chemical"; // Adjust to your actual chemical model path
+import Chemical from "@/db/models/Chemical";
 import AccessRequest from "@/db/models/AccessRequest";
 import ScientistAccess from "@/db/models/ScientistAccess";
 import AccessTable from "./AccessTable";
@@ -23,7 +23,6 @@ export default async function RequestAccessPage() {
   await dbConnect();
   const normalizedEmail = email.toLowerCase().trim();
 
-  // Fetch all chemicals from the database
   const chemicalsRaw = await Chemical.find({}).lean();
   const chemicals = chemicalsRaw.map((c) => ({
     _id: c._id.toString(),
@@ -31,7 +30,6 @@ export default async function RequestAccessPage() {
     formula: c.formula,
   }));
 
-  // Fetch pending/rejected requests and active granted access
   const [userRequestsRaw, scientistAccessDoc] = await Promise.all([
     AccessRequest.find({ userEmail: normalizedEmail }).lean(),
     ScientistAccess.findOne({ scientistEmail: normalizedEmail }).lean(),
