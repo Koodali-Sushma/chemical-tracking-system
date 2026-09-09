@@ -73,7 +73,7 @@ export default function Sidebar({ role }: { role: string }) {
       <div className="text-s text-gray-400 border-t border-gray-800 pt-4">
         <div className="flex justify-between mb-4">
           <SignOutButton />
-          <Link href="/simulator">
+          <Link href="/simulator" target="_blank" rel="noopener noreferrer">
             <Image
               src="/simulator.svg"
               alt="Simulator Icon"

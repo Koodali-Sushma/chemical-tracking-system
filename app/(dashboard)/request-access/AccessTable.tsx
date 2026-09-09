@@ -4,7 +4,7 @@ import { useState } from "react";
 import {
   requestChemicalAccess,
   cancelChemicalAccess,
-} from "@/app/actions/access";
+} from "@/app/(dashboard)/actions/access";
 
 interface Chemical {
   _id: string;

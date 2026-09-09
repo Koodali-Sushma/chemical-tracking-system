@@ -1,7 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { grantAccess, rejectAccess } from "@/app/actions/adminAccess";
+import {
+  grantAccess,
+  rejectAccess,
+} from "@/app/(dashboard)/actions/adminAccess";
 
 interface RequestItem {
   _id: string;
