@@ -3,20 +3,22 @@ import { auth } from "@/auth";
 import dbConnect from "@/db/connect";
 import Chemical from "@/db/models/Chemical";
 import DispenseLog from "@/db/DispenseLog";
+import ScientistAccess from "@/db/models/ScientistAccess";
 
 export async function POST(request: Request) {
   try {
     const session = await auth();
     const user = session?.user as { role?: string; email?: string } | undefined;
+    const userEmail = user?.email?.toLowerCase().trim();
 
-    if (!user || user.role !== "scientist") {
+    if (!session || !user || user.role !== "scientist") {
       return NextResponse.json(
         { error: "Only scientists can dispense chemicals." },
         { status: 403 },
       );
     }
 
-    if (!user.email) {
+    if (!userEmail) {
       return NextResponse.json(
         { error: "User email is missing." },
         { status: 401 },
@@ -35,18 +37,19 @@ export async function POST(request: Request) {
     }
 
     await dbConnect();
+    const accessRecord = await ScientistAccess.findOne({
+      scientistEmail: userEmail,
+    }).lean();
+    const allowedFormulas = accessRecord?.chemicalFormulas ?? [];
 
     const chemical = await Chemical.findOneAndUpdate(
       {
         _id: chemicalId,
         nodeStock: { $gte: amount },
+        formula: { $in: allowedFormulas },
       },
-      {
-        $inc: { nodeStock: -amount },
-      },
-      {
-        new: true,
-      },
+      { $inc: { nodeStock: -amount } },
+      { new: true },
     );
 
     if (!chemical) {
@@ -58,7 +61,7 @@ export async function POST(request: Request) {
 
     await DispenseLog.create({
       chemicalFormula: chemical.formula,
-      scientistEmail: user.email,
+      scientistEmail: userEmail,
       amountDrawn: amount,
     });
 
