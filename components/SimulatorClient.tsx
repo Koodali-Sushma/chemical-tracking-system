@@ -168,11 +168,14 @@ export default function SimulatorClient({
           <button
             onClick={handleRefill}
             disabled={
-              loading || !selectedChemical || selectedChemical.nodeStock >= 5
+              loading ||
+              !selectedChemical ||
+              selectedChemical.nodeStock >= 5 ||
+              selectedChemical.mainStock <= 0
             }
             className="w-full py-2 bg-emerald-600 text-white rounded font-medium hover:bg-emerald-700 disabled:opacity-50"
           >
-            {loading ? "Refilling..." : "Refill Node to 5L"}
+            {loading ? "Refilling..." : "Refill Node"}
           </button>
         </div>
       )}

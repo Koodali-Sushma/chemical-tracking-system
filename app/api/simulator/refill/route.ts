@@ -2,13 +2,15 @@ import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import dbConnect from "@/db/connect";
 import Chemical from "@/db/models/Chemical";
+import RefillLog from "@/db/models/RefillLog";
 
 export async function POST(request: Request) {
   try {
     const session = await auth();
-    const user = session?.user as { role?: string } | undefined;
+    const user = session?.user as { role?: string; email?: string } | undefined;
+    const technicianEmail = user?.email?.toLowerCase().trim();
 
-    if (!user || user.role !== "lab_technician") {
+    if (!user || user.role !== "lab_technician" || !technicianEmail) {
       return NextResponse.json(
         { error: "Only lab technicians can refill chemicals." },
         { status: 403 },
@@ -43,24 +45,30 @@ export async function POST(request: Request) {
       );
     }
 
-    const refillAmount = 5 - currentChemical.nodeStock;
-
-    if (currentChemical.mainStock < refillAmount) {
+    // Check if main stock is completely empty
+    if (currentChemical.mainStock <= 0) {
       return NextResponse.json(
         { error: "Insufficient main stock for refill." },
         { status: 400 },
       );
     }
 
+    // Calculate ideal amount to reach 5L
+    const idealRefillAmount = 5 - currentChemical.nodeStock;
+
+    // Take whatever main stock is available (partial refill if main stock < ideal amount)
+    const refillAmount = Math.min(currentChemical.mainStock, idealRefillAmount);
+    const newrizioneNodeStock = currentChemical.nodeStock + refillAmount;
+
     const chemical = await Chemical.findOneAndUpdate(
       {
         _id: chemicalId,
         nodeStock: currentChemical.nodeStock,
-        mainStock: { $gte: refillAmount },
+        mainStock: currentChemical.mainStock,
       },
       {
         $inc: { mainStock: -refillAmount },
-        $set: { nodeStock: 5 },
+        $set: { nodeStock: newrizioneNodeStock },
       },
       {
         new: true,
@@ -74,9 +82,16 @@ export async function POST(request: Request) {
       );
     }
 
+    // Record the event in the dedicated RefillLog collection
+    await RefillLog.create({
+      chemicalFormula: chemical.formula,
+      technicianEmail: technicianEmail,
+      amountRefilled: refillAmount,
+    });
+
     return NextResponse.json({
       success: true,
-      message: "Node refilled successfully.",
+      message: `Node refilled by ${refillAmount}L successfully.`,
       nodeStock: chemical.nodeStock,
       mainStock: chemical.mainStock,
     });
