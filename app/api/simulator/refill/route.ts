@@ -45,7 +45,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // Check if main stock is completely empty
     if (currentChemical.mainStock <= 0) {
       return NextResponse.json(
         { error: "Insufficient main stock for refill." },
@@ -53,10 +52,8 @@ export async function POST(request: Request) {
       );
     }
 
-    // Calculate ideal amount to reach 5L
     const idealRefillAmount = 5 - currentChemical.nodeStock;
 
-    // Take whatever main stock is available (partial refill if main stock < ideal amount)
     const refillAmount = Math.min(currentChemical.mainStock, idealRefillAmount);
     const newrizioneNodeStock = currentChemical.nodeStock + refillAmount;
 
@@ -82,7 +79,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // Record the event in the dedicated RefillLog collection
     await RefillLog.create({
       chemicalFormula: chemical.formula,
       technicianEmail: technicianEmail,

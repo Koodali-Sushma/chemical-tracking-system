@@ -24,7 +24,6 @@ export default async function NotificationsPage() {
   }[] = [];
 
   chemicals.forEach((chem) => {
-    // 1. Node stock check (< 1L)
     if (chem.nodeStock < 1) {
       notifications.push({
         id: `${chem.formula}-node`,
@@ -34,7 +33,6 @@ export default async function NotificationsPage() {
       });
     }
 
-    // 2. Main stock check (< 5L)
     if (chem.mainStock < 5) {
       notifications.push({
         id: `${chem.formula}-main`,
