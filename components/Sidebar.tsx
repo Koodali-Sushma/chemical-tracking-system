@@ -33,12 +33,6 @@ export default function Sidebar({ role }: { role: string }) {
               >
                 Access Requests
               </Link>
-              {/* <Link
-                href="/"
-                className="text-gray-600 hover:text-white block py-2 px-3 rounded hover:bg-gray-800 transition border-b border-gray-800"
-              >
-                Usage Reports
-              </Link> */}
             </>
           )}
 
@@ -60,12 +54,20 @@ export default function Sidebar({ role }: { role: string }) {
             </>
           )}
           {role === "lab_technician" && (
-            <Link
-              href="/"
-              className="text-gray-600 hover:text-white block py-2 px-3 rounded hover:bg-gray-800 transition border-b border-gray-800"
-            >
-              Stocks
-            </Link>
+            <>
+              <Link
+                href="/"
+                className="text-gray-600 hover:text-white block py-2 px-3 rounded hover:bg-gray-800 transition border-b border-gray-800"
+              >
+                Stocks
+              </Link>
+              <Link
+                href="/notifications"
+                className="text-gray-600 hover:text-white block py-2 px-3 rounded hover:bg-gray-800 transition border-b border-gray-800"
+              >
+                Notifications
+              </Link>
+            </>
           )}
         </nav>
       </div>
