@@ -45,7 +45,10 @@ export default function SimulatorClient({
 
   const [targetVolume, setTargetVolume] = useState<number>(10);
   const [activeIndex, setActiveIndex] = useState<number>(0);
+
+  // Separated action states so refill does not trigger stream animation
   const [dispensingChemId, setDispensingChemId] = useState<string | null>(null);
+  const [refillingChemId, setRefillingChemId] = useState<string | null>(null);
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
@@ -121,11 +124,12 @@ export default function SimulatorClient({
       setDispensingChemId(null);
     }
   };
+
   const triggerRefill = async () => {
     if (!activeChemical) return;
 
     const chemId = activeChemical._id;
-    setDispensingChemId(chemId);
+    setRefillingChemId(chemId); // Uses refilling state instead of dispensing state
 
     try {
       const response = await fetch("/api/simulator/refill", {
@@ -151,9 +155,16 @@ export default function SimulatorClient({
     } catch (error) {
       alert(error instanceof Error ? error.message : "Refill failed");
     } finally {
-      setDispensingChemId(null);
+      setRefillingChemId(null);
     }
   };
+  if (!activeChemical || chemicals.length <= 0) {
+    return (
+      <h1 className="text-red-500">
+        No chemical found!!!. Request for chemical access.....
+      </h1>
+    );
+  }
 
   return (
     <div className="bg-slate-900 text-white rounded-3xl p-6 shadow-2xl border border-slate-700 flex flex-col items-center max-w-xl mx-auto">
@@ -189,6 +200,8 @@ export default function SimulatorClient({
                 const chemStockLiters =
                   stockLevels[chem._id] ?? chem.nodeStock ?? 0;
                 const cupContentMl = cupContentMls[chem._id] || 0;
+
+                // Only trigger stream when this specific chemical is actively being dispensed
                 const isThisDispensing = dispensingChemId === chem._id;
 
                 const bottlePercentage = Math.min(
@@ -225,7 +238,7 @@ export default function SimulatorClient({
                           <div className="w-2 h-2 bg-slate-200 rounded-full"></div>
                         </div>
 
-                        {/* Flowing Chemical Droplets Stream */}
+                        {/* Flowing Chemical Droplets Stream (Only active during dispense) */}
                         {isThisDispensing && (
                           <div
                             className="absolute right-[-16px] bottom-2 w-2 h-10 rounded-full z-30 shadow-[0_0_10px_#6ee7b7]"
@@ -287,26 +300,28 @@ export default function SimulatorClient({
         )}
 
         {/* Volume Slider placed just above the single dispense button */}
-        <div className="w-full bg-slate-950/80 border border-slate-700/80 rounded-2xl p-4 space-y-3 shadow-inner mb-4">
-          <div className="flex justify-between items-center text-sm">
-            <span className="text-slate-400 font-medium">
-              Target Dispense Volume
-            </span>
-            <span className="text-emerald-400 font-bold">
-              {targetVolume} ml
-            </span>
-          </div>
+        {role === "scientist" && activeChemical && currentStockLiters > 0 && (
+          <div className="w-full bg-slate-950/80 border border-slate-700/80 rounded-2xl p-4 space-y-3 shadow-inner mb-4">
+            <div className="flex justify-between items-center text-sm">
+              <span className="text-slate-400 font-medium">
+                Target Dispense Volume
+              </span>
+              <span className="text-emerald-400 font-bold">
+                {targetVolume.toFixed(1)} ml
+              </span>
+            </div>
 
-          <input
-            type="range"
-            min="0.5"
-            max="50"
-            step="0.5"
-            value={targetVolume}
-            onChange={(e) => setTargetVolume(parseFloat(e.target.value))}
-            className="w-full accent-emerald-400 cursor-pointer"
-          />
-        </div>
+            <input
+              type="range"
+              min="0.5"
+              max="50"
+              step="0.5"
+              value={targetVolume}
+              onChange={(e) => setTargetVolume(parseFloat(e.target.value))}
+              className="w-full accent-emerald-400 cursor-pointer"
+            />
+          </div>
+        )}
 
         {/* Single Global Dispense Button */}
         {role === "scientist" && activeChemical && currentStockLiters <= 0 && (
@@ -342,13 +357,13 @@ export default function SimulatorClient({
           <button
             onClick={triggerRefill}
             disabled={
-              dispensingChemId !== null ||
+              refillingChemId !== null ||
               currentStockLiters >= 5 ||
               activeChemical.mainStock <= 0
             }
             className="w-full py-3 bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 text-slate-950 font-bold rounded-xl transition cursor-pointer"
           >
-            {dispensingChemId !== null ? "Refilling..." : "Refill Node"}
+            {refillingChemId !== null ? "Refilling..." : "Refill Node"}
           </button>
         )}
       </div>
