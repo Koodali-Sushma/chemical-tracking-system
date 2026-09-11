@@ -36,8 +36,12 @@ export default async function SimulatorPage() {
   const chemicals = await Chemical.find(query).lean();
   console.log("Chemicals fetched for user:", chemicals);
   const serializedChemicals = chemicals.map((c) => ({
-    ...c,
     _id: c._id.toString(),
+    name: c.name,
+    formula: c.formula,
+    nodeStock: c.nodeStock,
+    mainStock: c.mainStock,
+    maxCapacity: 5,
   }));
 
   return (
