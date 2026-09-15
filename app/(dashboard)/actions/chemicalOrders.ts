@@ -7,6 +7,7 @@ import ChemicalProvider from "@/db/models/ChemicalProvider";
 import ChemicalOrderRequest from "@/db/models/ChemicalOrderRequest";
 import { revalidatePath } from "next/cache";
 import mongoose from "mongoose";
+import { sendChemicalOrderEmail } from "@/lib/sendOrderEmail";
 
 export async function createChemicalOrder(
   chemicalId: string,
@@ -91,15 +92,49 @@ export async function createChemicalOrder(
 }
 export async function approveChemicalOrder(orderId: string) {
   const session = await auth();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const role = (session?.user as any)?.role;
+  const adminEmail = session?.user?.email?.toLowerCase().trim();
 
   if (!session || role !== "admin") {
     throw new Error(
       "Unauthorized: Only administrators can approve chemical orders.",
     );
   }
+  if (!adminEmail) {
+    throw new Error("Admin email not found in session.");
+  }
 
+  if (!mongoose.Types.ObjectId.isValid(orderId)) {
+    throw new Error("Invalid order ID.");
+  }
   await dbConnect();
+
+  const order = await ChemicalOrderRequest.findOne({
+    _id: new mongoose.Types.ObjectId(orderId),
+    status: "pending",
+  });
+
+  if (!order) {
+    throw new Error("Order request not found or has already been resolved.");
+  }
+
+  const provider = await ChemicalProvider.findOne({
+    _id: order.providerId,
+    active: true,
+  });
+
+  if (!provider) {
+    throw new Error("Active provider not found for this order.");
+  }
+
+  await sendChemicalOrderEmail({
+    providerEmail: provider.email,
+    adminEmail,
+    chemicalName: order.chemicalName,
+    chemicalFormula: order.chemicalFormula,
+    quantity: order.requestedAmount,
+  });
 
   const updatedOrder = await ChemicalOrderRequest.findOneAndUpdate(
     {
@@ -121,12 +156,14 @@ export async function approveChemicalOrder(orderId: string) {
 
   revalidatePath("/chemical-orders");
   revalidatePath("/admin/chemical-orders");
+  revalidatePath("/notifications");
 
   return { success: true };
 }
 
 export async function rejectChemicalOrder(orderId: string) {
   const session = await auth();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const role = (session?.user as any)?.role;
 
   if (!session || role !== "admin") {
