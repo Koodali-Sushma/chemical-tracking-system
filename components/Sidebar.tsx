@@ -33,6 +33,12 @@ export default function Sidebar({ role }: { role: string }) {
               >
                 Access Requests
               </Link>
+              <Link
+                href="/admin/chemical-orders"
+                className="text-gray-600 hover:text-white block py-2 px-3 rounded hover:bg-gray-800 transition border-b border-gray-800"
+              >
+                Chemical Orders
+              </Link>
             </>
           )}
 
@@ -66,6 +72,12 @@ export default function Sidebar({ role }: { role: string }) {
                 className="text-gray-600 hover:text-white block py-2 px-3 rounded hover:bg-gray-800 transition border-b border-gray-800"
               >
                 Notifications
+              </Link>
+              <Link
+                href="/chemical-orders"
+                className="text-gray-600 hover:text-white block py-2 px-3 rounded hover:bg-gray-800 transition border-b border-gray-800"
+              >
+                Chemical Orders
               </Link>
             </>
           )}

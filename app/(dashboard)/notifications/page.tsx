@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import dbConnect from "@/db/connect";
 import Chemical from "@/db/models/Chemical";
+import Link from "next/link";
 
 export default async function NotificationsPage() {
   const session = await auth();
@@ -79,6 +80,15 @@ export default async function NotificationsPage() {
                     : "Main Stock Reorder"}
                 </span>
                 <p className="text-sm">{notif.message}</p>
+                {/* Link displayed only for main stock reorder notifications */}
+                {notif.type === "main" && (
+                  <Link
+                    href="/chemical-orders"
+                    className="mt-3 inline-block rounded bg-blue-600 px-3 py-2 text-xs font-medium text-white hover:bg-blue-700 transition"
+                  >
+                    View chemical orders
+                  </Link>
+                )}
               </div>
             </div>
           ))}
