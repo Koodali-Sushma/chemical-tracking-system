@@ -78,7 +78,7 @@ export default async function NotificationsPage() {
                     : "Main Stock Reorder"}
                 </span>
                 <p className="text-sm">{notif.message}</p>
-                {/* Link displayed only for main stock reorder notifications */}
+
                 {notif.type === "main" && (
                   <Link
                     href="/chemical-orders"

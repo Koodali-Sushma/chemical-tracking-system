@@ -26,7 +26,6 @@ export default function LoginPage() {
       if (result?.error) {
         setError("Invalid email or password");
       } else {
-        // Fetch the active session to inspect the user's role
         const res = await fetch("/api/auth/session");
         const session = await res.json();
         const role = session?.user?.role;

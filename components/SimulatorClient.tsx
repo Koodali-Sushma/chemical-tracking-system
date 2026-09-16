@@ -46,7 +46,6 @@ export default function SimulatorClient({
   const [targetVolume, setTargetVolume] = useState<number>(10);
   const [activeIndex, setActiveIndex] = useState<number>(0);
 
-  // Separated action states so refill does not trigger stream animation
   const [dispensingChemId, setDispensingChemId] = useState<string | null>(null);
   const [refillingChemId, setRefillingChemId] = useState<string | null>(null);
 
@@ -129,7 +128,7 @@ export default function SimulatorClient({
     if (!activeChemical) return;
 
     const chemId = activeChemical._id;
-    setRefillingChemId(chemId); // Uses refilling state instead of dispensing state
+    setRefillingChemId(chemId);
 
     try {
       const response = await fetch("/api/simulator/refill", {
@@ -168,9 +167,7 @@ export default function SimulatorClient({
 
   return (
     <div className="bg-slate-900 text-white rounded-3xl p-6 shadow-2xl border border-slate-700 flex flex-col items-center max-w-xl mx-auto">
-      {/* Main Single Card Wrapper */}
       <div className="w-full bg-slate-800/80 rounded-3xl border border-slate-700 p-6 flex flex-col items-center shadow-xl relative">
-        {/* Scroll Buttons Placed on Either Side of the Horizontal Scroll Panel */}
         <button
           onClick={() => scroll("left")}
           className="absolute left-[-18px] top-[42%] -translate-y-1/2 w-10 h-10 bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-full flex items-center justify-center text-slate-200 transition cursor-pointer shadow-xl z-30"
@@ -186,7 +183,6 @@ export default function SimulatorClient({
           ›
         </button>
 
-        {/* Scrollable Unit containing only the bottles and cups */}
         {chemicals.length > 0 && (
           <div className="w-full relative mb-6">
             <div
@@ -201,7 +197,6 @@ export default function SimulatorClient({
                   stockLevels[chem._id] ?? chem.nodeStock ?? 0;
                 const cupContentMl = cupContentMls[chem._id] || 0;
 
-                // Only trigger stream when this specific chemical is actively being dispensed
                 const isThisDispensing = dispensingChemId === chem._id;
 
                 const bottlePercentage = Math.min(
@@ -217,28 +212,22 @@ export default function SimulatorClient({
                     key={chem._id}
                     className="flex-shrink-0 w-full flex flex-col items-center snap-center"
                   >
-                    {/* Rig Simulation Area */}
                     <div className="flex items-end justify-center space-x-1 relative w-full h-64 bg-slate-950/50 rounded-2xl border border-slate-700/60 p-6">
-                      {/* Current Stock Badge */}
                       <div className="absolute top-4 left-4 bg-slate-800/90 border border-slate-600 text-emerald-300 font-extrabold text-xs px-2.5 py-1.5 rounded-xl shadow-md z-30">
                         Stock: {formatLiters(chemStockLiters)}L /{" "}
                         {formatLiters(chemMaxCapacity)}L
                       </div>
 
-                      {/* Cylinder Container Area */}
                       <div className="relative flex flex-col items-center">
-                        {/* Cylinder Lid / Cap */}
                         <div className="flex flex-col items-center z-20 mb-[-2px]">
                           <div className="w-5 h-2 bg-slate-400 rounded-t-md"></div>
                           <div className="w-24 h-3.5 bg-slate-500 rounded-md shadow-md border-t border-slate-400"></div>
                         </div>
 
-                        {/* Side Tap Spout */}
                         <div className="absolute right-[-24px] bottom-10 w-10 h-4 bg-slate-400 rounded-r-lg z-20 flex items-center justify-end pr-1 shadow-md border border-slate-500">
                           <div className="w-2 h-2 bg-slate-200 rounded-full"></div>
                         </div>
 
-                        {/* Flowing Chemical Droplets Stream (Only active during dispense) */}
                         {isThisDispensing && (
                           <div
                             className="absolute right-[-16px] bottom-2 w-2 h-10 rounded-full z-30 shadow-[0_0_10px_#6ee7b7]"
@@ -250,7 +239,6 @@ export default function SimulatorClient({
                           />
                         )}
 
-                        {/* Cylinder Body */}
                         <div
                           className="relative w-32 h-48 bg-slate-800/40 rounded-b-2xl border-x-[6px] border-b-[6px] border-slate-500 overflow-hidden flex flex-col justify-end shadow-inner z-10"
                           style={{
@@ -265,7 +253,6 @@ export default function SimulatorClient({
                             <div className="absolute top-0 w-full h-2 bg-white/40"></div>
                           </div>
 
-                          {/* Name Board Plaque */}
                           <div className="absolute inset-x-4 top-1/2 -translate-y-1/2 bg-white/95 text-slate-900 py-1 px-1 rounded-md text-center shadow border border-slate-300 pointer-events-none z-30">
                             <span className="block text-[9px] uppercase font-bold text-slate-500 tracking-wider">
                               Compound
@@ -277,7 +264,6 @@ export default function SimulatorClient({
                         </div>
                       </div>
 
-                      {/* Smaller Glass Cup Container */}
                       <div className="flex flex-col items-center">
                         <div className="relative w-12 h-8 bg-slate-200/10 rounded-b-lg border-x-2 border-b-2 border-slate-400 overflow-hidden flex flex-col justify-end shadow-inner backdrop-blur-sm">
                           <div className="absolute left-1 top-1 w-0.5 h-4 bg-white/20 rounded-full"></div>
@@ -299,7 +285,6 @@ export default function SimulatorClient({
           </div>
         )}
 
-        {/* Volume Slider placed just above the single dispense button */}
         {role === "scientist" && activeChemical && currentStockLiters > 0 && (
           <div className="w-full bg-slate-950/80 border border-slate-700/80 rounded-2xl p-4 space-y-3 shadow-inner mb-4">
             <div className="flex justify-between items-center text-sm">
@@ -323,7 +308,6 @@ export default function SimulatorClient({
           </div>
         )}
 
-        {/* Single Global Dispense Button */}
         {role === "scientist" && activeChemical && currentStockLiters <= 0 && (
           <p className="mb-3 text-sm font-semibold text-red-400">
             No stock available
