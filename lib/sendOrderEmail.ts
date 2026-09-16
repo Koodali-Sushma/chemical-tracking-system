@@ -8,10 +8,12 @@ type OrderEmailData = {
   quantity: number;
 };
 
+const smtpPort = Number(process.env.SMTP_PORT || 587);
+
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
-  port: Number(process.env.SMTP_PORT || 587),
-  secure: false,
+  port: smtpPort,
+  secure: smtpPort === 465,
   auth: {
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASS,
@@ -28,7 +30,7 @@ export async function sendChemicalOrderEmail({
   if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
     throw new Error("SMTP environment variables are not configured.");
   }
-
+  await transporter.verify(); //Needs to be removed in production, but useful for debugging SMTP issues during development.
   await transporter.sendMail({
     from: process.env.SMTP_FROM || process.env.SMTP_USER,
     to: providerEmail,

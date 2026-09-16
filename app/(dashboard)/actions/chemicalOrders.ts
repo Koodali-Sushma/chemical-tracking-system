@@ -80,6 +80,7 @@ export async function createChemicalOrder(
     requestedBy: normalizedEmail,
     requestedAmount,
     status: "pending",
+    emailStatus: "pending",
     createdAt: new Date(),
   });
 
@@ -110,32 +111,6 @@ export async function approveChemicalOrder(orderId: string) {
   }
   await dbConnect();
 
-  const order = await ChemicalOrderRequest.findOne({
-    _id: new mongoose.Types.ObjectId(orderId),
-    status: "pending",
-  });
-
-  if (!order) {
-    throw new Error("Order request not found or has already been resolved.");
-  }
-
-  const provider = await ChemicalProvider.findOne({
-    _id: order.providerId,
-    active: true,
-  });
-
-  if (!provider) {
-    throw new Error("Active provider not found for this order.");
-  }
-
-  await sendChemicalOrderEmail({
-    providerEmail: provider.email,
-    adminEmail,
-    chemicalName: order.chemicalName,
-    chemicalFormula: order.chemicalFormula,
-    quantity: order.requestedAmount,
-  });
-
   const updatedOrder = await ChemicalOrderRequest.findOneAndUpdate(
     {
       _id: new mongoose.Types.ObjectId(orderId),
@@ -144,7 +119,9 @@ export async function approveChemicalOrder(orderId: string) {
     {
       $set: {
         status: "approved",
+        emailStatus: "pending",
         reviewedAt: new Date(),
+        emailError: undefined,
       },
     },
     { new: true },
@@ -152,6 +129,75 @@ export async function approveChemicalOrder(orderId: string) {
 
   if (!updatedOrder) {
     throw new Error("Order request not found or has already been resolved.");
+  }
+
+  const provider = await ChemicalProvider.findOne({
+    _id: updatedOrder.providerId,
+    active: true,
+  });
+
+  if (!provider) {
+    await ChemicalOrderRequest.findOneAndUpdate(
+      {
+        _id: updatedOrder._id,
+        status: "approved",
+      },
+      {
+        $set: {
+          status: "pending",
+          emailStatus: "failed",
+          emailError: "Active provider was not found.",
+        },
+      },
+    );
+    throw new Error("Active provider not found for this order.");
+  }
+  try {
+    await sendChemicalOrderEmail({
+      providerEmail: provider.email,
+      adminEmail,
+      chemicalName: updatedOrder.chemicalName,
+      chemicalFormula: updatedOrder.chemicalFormula,
+      quantity: updatedOrder.requestedAmount,
+    });
+    await ChemicalOrderRequest.findOneAndUpdate(
+      {
+        _id: updatedOrder._id,
+        status: "approved",
+        emailStatus: "pending",
+      },
+      {
+        $set: {
+          emailStatus: "sent",
+          emailSentAt: new Date(),
+        },
+        $unset: {
+          emailError: "",
+        },
+      },
+    );
+  } catch (error) {
+    const emailError =
+      error instanceof Error ? error.message : "Email delivery failed.";
+
+    await ChemicalOrderRequest.findOneAndUpdate(
+      {
+        _id: updatedOrder._id,
+        status: "approved",
+        emailStatus: "pending",
+      },
+      {
+        $set: {
+          status: "pending",
+          emailStatus: "failed",
+          emailError,
+        },
+      },
+    );
+
+    throw new Error(
+      "Order was not approved because the provider email could not be sent.",
+    );
   }
 
   revalidatePath("/chemical-orders");
@@ -197,7 +243,7 @@ export async function rejectChemicalOrder(orderId: string) {
 
   return { success: true };
 }
-export async function receiveChemicalOrder(orderId: string) {
+/* export async function receiveChemicalOrder(orderId: string) {
   const session = await auth();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const role = (session?.user as any)?.role;
@@ -248,4 +294,4 @@ export async function receiveChemicalOrder(orderId: string) {
   revalidatePath("/notifications");
 
   return { success: true };
-}
+} */

@@ -15,6 +15,8 @@ interface AdminOrderRow {
   requestedBy: string;
   requestedAmount: number;
   status: "pending" | "approved" | "rejected" | "received";
+  emailStatus: "pending" | "sent" | "failed";
+  emailError: string;
   createdAt: string;
 }
 
@@ -100,6 +102,7 @@ export default function AdminOrderTable({ orders }: AdminOrderTableProps) {
               <th className="p-4">Amount</th>
               <th className="p-4">Status</th>
               <th className="p-4 text-right">Actions</th>
+              <th className="p-4">Email Status</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-700/60 text-sm">
@@ -181,6 +184,25 @@ export default function AdminOrderTable({ orders }: AdminOrderTableProps) {
                         </span>
                       )}
                     </div>
+                  </td>
+                  <td className="p-4">
+                    <span
+                      className={
+                        order.emailStatus === "sent"
+                          ? "text-emerald-400"
+                          : order.emailStatus === "failed"
+                            ? "text-red-400"
+                            : "text-yellow-400"
+                      }
+                    >
+                      {order.emailStatus}
+                    </span>
+
+                    {order.emailStatus === "failed" && order.emailError && (
+                      <p className="text-xs text-red-400 mt-1">
+                        {order.emailError}
+                      </p>
+                    )}
                   </td>
                 </tr>
               );

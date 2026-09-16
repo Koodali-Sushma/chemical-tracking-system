@@ -28,7 +28,9 @@ export default async function ChemicalOrdersPage() {
   const existingOrders = await ChemicalOrderRequest.find({
     requestedBy: userEmail,
     status: { $in: ["pending", "approved", "received", "rejected"] },
-  }).lean();
+  })
+    .sort({ createdAt: -1 })
+    .lean();
 
   const orderStatusMap: Record<
     string,
@@ -36,7 +38,9 @@ export default async function ChemicalOrdersPage() {
   > = {};
 
   existingOrders.forEach((order) => {
-    orderStatusMap[order.chemicalFormula] = order.status;
+    if (!orderStatusMap[order.chemicalFormula]) {
+      orderStatusMap[order.chemicalFormula] = order.status;
+    }
   });
 
   const serializedChemicals = lowStockChemicals.map((chem) => {

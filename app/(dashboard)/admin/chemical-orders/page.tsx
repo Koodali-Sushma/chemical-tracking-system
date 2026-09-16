@@ -29,6 +29,8 @@ export default async function AdminChemicalOrdersPage() {
     requestedBy: order.requestedBy,
     requestedAmount: order.requestedAmount,
     status: order.status as "pending" | "approved" | "rejected" | "received",
+    emailStatus: order.emailStatus,
+    emailError: order.emailError || "",
     createdAt: order.createdAt ? new Date(order.createdAt).toISOString() : "",
   }));
 

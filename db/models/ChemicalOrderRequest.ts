@@ -10,6 +10,9 @@ export interface IChemicalOrderRequest extends Document {
   status: "pending" | "approved" | "rejected" | "received";
   createdAt: Date;
   reviewedAt?: Date;
+  emailStatus: "pending" | "sent" | "failed";
+  emailSentAt?: Date;
+  emailError?: string;
 }
 
 const ChemicalOrderRequestSchema = new Schema<IChemicalOrderRequest>(
@@ -28,6 +31,14 @@ const ChemicalOrderRequestSchema = new Schema<IChemicalOrderRequest>(
     },
     createdAt: { type: Date, default: Date.now },
     reviewedAt: { type: Date },
+    emailStatus: {
+      type: String,
+      enum: ["pending", "sent", "failed"],
+      default: "pending",
+      required: true,
+    },
+    emailSentAt: { type: Date },
+    emailError: { type: String },
   },
   {
     collection: "chemical_order_requests",
