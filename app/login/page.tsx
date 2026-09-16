@@ -26,7 +26,21 @@ export default function LoginPage() {
       if (result?.error) {
         setError("Invalid email or password");
       } else {
-        router.push("/");
+        // Fetch the active session to inspect the user's role
+        const res = await fetch("/api/auth/session");
+        const session = await res.json();
+        const role = session?.user?.role;
+
+        if (role === "scientist") {
+          router.push("/logs");
+        } else if (role === "admin") {
+          router.push("/");
+        } else if (role === "lab_technician") {
+          router.push("/notifications");
+        } else {
+          setError("Unauthorized role");
+        }
+
         router.refresh();
       }
     } catch {

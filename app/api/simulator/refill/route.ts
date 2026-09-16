@@ -55,7 +55,7 @@ export async function POST(request: Request) {
     const idealRefillAmount = 5 - currentChemical.nodeStock;
 
     const refillAmount = Math.min(currentChemical.mainStock, idealRefillAmount);
-    const newrizioneNodeStock = currentChemical.nodeStock + refillAmount;
+    const newNodeStock = currentChemical.nodeStock + refillAmount;
 
     const chemical = await Chemical.findOneAndUpdate(
       {
@@ -65,7 +65,7 @@ export async function POST(request: Request) {
       },
       {
         $inc: { mainStock: -refillAmount },
-        $set: { nodeStock: newrizioneNodeStock },
+        $set: { nodeStock: newNodeStock },
       },
       {
         new: true,
