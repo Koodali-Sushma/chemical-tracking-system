@@ -13,6 +13,8 @@ export interface IChemicalOrderRequest extends Document {
   emailStatus: "pending" | "sent" | "failed";
   emailSentAt?: Date;
   emailError?: string;
+  receivedBy?: string;
+  receivedAt?: Date;
 }
 
 const ChemicalOrderRequestSchema = new Schema<IChemicalOrderRequest>(
@@ -39,6 +41,14 @@ const ChemicalOrderRequestSchema = new Schema<IChemicalOrderRequest>(
     },
     emailSentAt: { type: Date },
     emailError: { type: String },
+    receivedBy: {
+      type: String,
+      trim: true,
+      lowercase: true,
+    },
+    receivedAt: {
+      type: Date,
+    },
   },
   {
     collection: "chemical_order_requests",
