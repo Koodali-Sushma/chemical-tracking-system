@@ -31,7 +31,7 @@ export default async function InventoryPage() {
         Welcome, {(session.user as any)?.name}! Here is the list of chemicals in
         the inventory:
       </p>
-      <div className="w-180 overflow-x-auto bg-slate-800/80 border border-slate-700 rounded-2xl shadow-xl overflow-hidden align-middle">
+      <div className=" bg-slate-800/80 border border-slate-700 rounded-2xl shadow-xl overflow-hidden">
         <table className="w-full text-center border-collapse text-slate-100">
           <thead>
             <tr className="bg-slate-900/80 border-b border-slate-700 text-xs font-bold uppercase tracking-wider text-slate-400">
