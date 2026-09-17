@@ -79,6 +79,12 @@ export default function Sidebar({ role }: { role: string }) {
               >
                 Chemical Orders
               </Link>
+              <Link
+                href="/receive-delivery"
+                className="text-gray-600 hover:text-white block py-2 px-3 rounded hover:bg-gray-800 transition border-b border-gray-800"
+              >
+                Receive Delivery
+              </Link>
             </>
           )}
         </nav>

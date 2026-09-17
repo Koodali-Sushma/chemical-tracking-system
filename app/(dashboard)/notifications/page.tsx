@@ -57,28 +57,42 @@ export default async function NotificationsPage() {
       </div>
 
       {notifications.length === 0 ? (
-        <div className="bg-white p-6 rounded-lg shadow border border-gray-200 text-center text-gray-500">
+        <div className="bg-white p-6 rounded-lg shadow border border-gray-200 text-center text-gray-800">
           No active alerts or warnings. All stock levels are optimal.
         </div>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-4 text-gray-600">
           {notifications.map((notif) => (
             <div
               key={notif.id}
               className={`p-4 rounded-lg border shadow-sm flex items-start gap-4 ${
                 notif.priority === "high"
-                  ? "bg-red-50 border-red-200 text-red-900"
-                  : "bg-yellow-50 border-yellow-200 text-yellow-900"
+                  ? "bg-red-50 dark:bg-gray-500/50 border-red-400   dark:border-red-400 border-3"
+                  : "bg-yellow-100 dark:bg-gray-500/50 border-yellow-400   dark:border-yellow-300 border-3"
               }`}
             >
               <div>
-                <span className="font-semibold uppercase text-xs tracking-wider block mb-1">
+                <span
+                  className={`font-semibold uppercase text-xs tracking-wider block mb-1 ${
+                    notif.priority === "high"
+                      ? "dark:text-red-400 dark:text-red-200"
+                      : "dark:text-yellow-400 dark:text-yellow-400"
+                  }`}
+                >
                   {notif.type === "node"
                     ? "Node Refill Alert"
                     : "Main Stock Reorder"}
                 </span>
-                <p className="text-sm">{notif.message}</p>
-
+                <p
+                  className={`text-sm ${
+                    notif.priority === "high"
+                      ? "text-red-700 dark:text-red-200"
+                      : "text-yellow-700 dark:text-yellow-700"
+                  }`}
+                >
+                  {notif.message}
+                </p>
+                {/* Link displayed only for main stock reorder notifications */}
                 {notif.type === "main" && (
                   <Link
                     href="/chemical-orders"

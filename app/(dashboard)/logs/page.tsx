@@ -48,37 +48,36 @@ export default async function UsageReportPage() {
           No dispense logs found for your account.
         </div>
       ) : (
-        <div className="overflow-x-auto bg-white rounded-lg shadow border border-gray-200">
-          <table className="w-full text-left border-collapse">
-            <thead className="bg-gray-100 border-b border-gray-200 text-gray-700 text-sm uppercase">
-              <tr>
-                <th className="p-4 font-semibold border-r border-gray-200">
-                  Timestamp
-                </th>
-                <th className="p-4 font-semibold border-r border-gray-200">
-                  Chemical Formula
-                </th>
-                <th className="p-4 font-semibold border-r border-gray-200">
-                  Amount Used
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200 text-sm">
-              {serializedLogs.map((log) => (
-                <tr key={log._id} className="hover:bg-gray-50 transition">
-                  <td className="p-4 text-gray-600 border-r border-gray-200 whitespace-nowrap">
-                    {log.timestamp}
-                  </td>
-                  <td className="p-4 font-medium text-gray-900 border-r border-gray-200">
-                    {log.chemicalFormula}
-                  </td>
-                  <td className="p-4 text-gray-700 font-medium border-r border-gray-200">
-                    {log.amountDrawn} L
-                  </td>
+        <div className="bg-slate-800/80 border border-slate-700 rounded-2xl shadow-xl overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="bg-slate-900/80 border-b border-slate-700 text-xs font-bold uppercase tracking-wider text-slate-400">
+                  <th className="p-4">Timestamp</th>
+                  <th className="p-4">Chemical Formula</th>
+                  <th className="p-4">Amount Used</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-slate-700/60 text-sm">
+                {serializedLogs.map((log) => (
+                  <tr
+                    key={log._id}
+                    className="hover:bg-slate-700/30 transition"
+                  >
+                    <td className="p-4 text-slate-300 text-xs font-mono whitespace-nowrap">
+                      {log.timestamp}
+                    </td>
+                    <td className="p-4 font-mono text-emerald-400">
+                      {log.chemicalFormula}
+                    </td>
+                    <td className="p-4 font-bold text-slate-200">
+                      {log.amountDrawn} L
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
     </div>

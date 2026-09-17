@@ -236,3 +236,83 @@ export async function rejectChemicalOrder(orderId: string) {
 
   return { success: true };
 }
+export async function receiveChemicalOrder(orderId: string) {
+  const session = await auth();
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const role = (session?.user as any)?.role;
+  const receiverEmail = session?.user?.email?.toLowerCase().trim();
+
+  if (!session || role !== "lab_technician") {
+    throw new Error(
+      "Unauthorized: Only lab technicians can receive deliveries.",
+    );
+  }
+
+  if (!receiverEmail) {
+    throw new Error("Logged-in technician email is missing.");
+  }
+
+  if (!mongoose.Types.ObjectId.isValid(orderId)) {
+    throw new Error("Invalid order ID.");
+  }
+
+  await dbConnect();
+
+  const dbSession = await mongoose.startSession();
+  dbSession.startTransaction();
+
+  try {
+    const receivedOrder = await ChemicalOrderRequest.findOneAndUpdate(
+      {
+        _id: new mongoose.Types.ObjectId(orderId),
+        status: "approved",
+        emailStatus: "sent",
+      },
+      {
+        $set: {
+          status: "received",
+          receivedBy: receiverEmail,
+          receivedAt: new Date(),
+        },
+      },
+      {
+        new: true,
+        session: dbSession,
+      },
+    );
+
+    if (!receivedOrder) {
+      throw new Error(
+        "Order was not found, email was not sent, or the order is not approved.",
+      );
+    }
+
+    const chemical = await Chemical.findOne({
+      formula: receivedOrder.chemicalFormula,
+    }).session(dbSession);
+
+    if (!chemical) {
+      throw new Error("Chemical associated with this order was not found.");
+    }
+
+    chemical.mainStock = parseFloat(
+      (chemical.mainStock + receivedOrder.requestedAmount).toFixed(3),
+    );
+
+    await chemical.save({ session: dbSession });
+
+    await dbSession.commitTransaction();
+
+    revalidatePath("/receive-delivery");
+    revalidatePath("/chemical-orders");
+    revalidatePath("/admin/chemical-orders");
+
+    return { success: true };
+  } catch (error) {
+    await dbSession.abortTransaction();
+    throw error;
+  } finally {
+    await dbSession.endSession();
+  }
+}
