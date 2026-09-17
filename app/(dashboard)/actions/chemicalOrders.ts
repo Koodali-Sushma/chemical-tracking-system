@@ -33,18 +33,15 @@ export async function createChemicalOrder(
 
   await dbConnect();
 
-  // Find the chemical by _id
   const chemical = await Chemical.findById(chemicalId);
   if (!chemical) {
     throw new Error("Chemical not found.");
   }
 
-  // Server-side validation: Confirm mainStock < 5
   if (chemical.mainStock >= 5) {
     throw new Error("Order creation failed: Main stock must be less than 5.");
   }
 
-  // Find the provider using _id and active: true
   const provider = await ChemicalProvider.findOne({
     _id: new mongoose.Types.ObjectId(providerId),
     active: true,
@@ -54,12 +51,10 @@ export async function createChemicalOrder(
     throw new Error("Active chemical provider not found.");
   }
 
-  // Confirm the provider supports the chemical formula
   if (!provider.chemicalFormulas.includes(chemical.formula)) {
     throw new Error("Selected provider does not supply this chemical formula.");
   }
 
-  // Check for an existing pending order for this chemical formula
   const existingPendingOrder = await ChemicalOrderRequest.findOne({
     chemicalFormula: chemical.formula,
     status: "pending",
@@ -71,7 +66,6 @@ export async function createChemicalOrder(
     );
   }
 
-  // Create the new ChemicalOrderRequest with status pending
   await ChemicalOrderRequest.create({
     chemicalFormula: chemical.formula,
     chemicalName: chemical.name,
@@ -84,7 +78,6 @@ export async function createChemicalOrder(
     createdAt: new Date(),
   });
 
-  // Revalidate required paths
   revalidatePath("/chemical-orders");
   revalidatePath("/notifications");
   revalidatePath("/admin/chemical-orders");

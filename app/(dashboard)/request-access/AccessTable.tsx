@@ -28,7 +28,6 @@ export default function AccessTable({
 }) {
   const [loadingFormula, setLoadingFormula] = useState<string | null>(null);
 
-  // Map existing requests for fast lookup by formula
   const requestMap = new Map(
     userRequests.map((req) => [req.formula, req.status]),
   );

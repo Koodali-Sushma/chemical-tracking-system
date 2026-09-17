@@ -17,11 +17,9 @@ export default async function DashboardLayout({
 
   return (
     <div className="flex h-screen overflow-hidden">
-      {/* Sidebar receives the role prop securely from the server */}
       <Sidebar role={role} />
 
-      {/* Main content taking the remaining 90% width */}
-      <main className="w-[90%] bg-gray-50 h-full overflow-y-auto">
+      <main className="w-[80%] bg-gray-50 h-full overflow-y-auto">
         <div className="p-8 pb-24">{children}</div>
       </main>
     </div>

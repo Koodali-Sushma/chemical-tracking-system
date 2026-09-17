@@ -16,7 +16,6 @@ export async function requestChemicalAccess(formula: string) {
   await dbConnect();
   const normalizedEmail = email.toLowerCase().trim();
 
-  // Check if scientist already has access in ScientistAccess collection
   const existingAccess = await ScientistAccess.findOne({
     scientistEmail: normalizedEmail,
     chemicalFormulas: formula,

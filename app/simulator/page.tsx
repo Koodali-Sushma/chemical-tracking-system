@@ -20,7 +20,6 @@ export default async function SimulatorPage() {
 
   let query = {};
 
-  // If the user is a scientist, restrict chemicals based on their access list
   if (role === "scientist" && email) {
     const accessRecord = await ScientistAccess.findOne({
       scientistEmail: email.toLowerCase().trim(),

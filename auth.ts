@@ -17,16 +17,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         }
         try {
           await dbConnect();
-          // Normalize email to prevent case-sensitivity or whitespace issues
+
           const email = String(credentials.email).toLowerCase().trim();
-          // Find the user in MongoDB
+
           const user = await User.findOne({ email });
 
           if (!user) {
             return null;
           }
 
-          // Simple password check (Note: use bcrypt to hash and compare in production)
           const isPasswordValid = credentials.password === user.password;
 
           if (!isPasswordValid) {
@@ -41,7 +40,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             );
           }
 
-          // Return user object with role data attached to the session
           return {
             id: user._id.toString(),
             name: user.name,
@@ -57,7 +55,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   ],
   session: {
     strategy: "jwt",
-    maxAge: 15 * 60, // Sets session expiration to 15 minutes (e.g., 15 * 60 seconds = 15 minutes)
+    maxAge: 15 * 60,
   },
   callbacks: {
     async jwt({ token, user }) {

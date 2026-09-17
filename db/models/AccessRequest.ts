@@ -18,7 +18,6 @@ const AccessRequestSchema = new Schema<IAccessRequest>({
   createdAt: { type: Date, default: Date.now },
 });
 
-// Compound index to ensure a user can't request the same chemical formula multiple times concurrently
 AccessRequestSchema.index({ userEmail: 1, formula: 1 }, { unique: true });
 
 export default mongoose.models.AccessRequest ||

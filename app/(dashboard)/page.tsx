@@ -4,7 +4,6 @@ import dbConnect from "@/db/connect";
 import Chemical from "@/db/models/Chemical";
 
 export default async function InventoryPage() {
-  // check for authentication first before rendering the page
   const session = await auth();
 
   if (!session) {
@@ -19,7 +18,6 @@ export default async function InventoryPage() {
     redirect("/login");
   }
 
-  // Connect to the database and fetch chemicals
   await dbConnect();
 
   const chemicals = await Chemical.find({});
