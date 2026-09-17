@@ -79,7 +79,7 @@ export default async function NotificationsPage() {
                     ? "Node Refill Alert"
                     : "Main Stock Reorder"}
                 </span>
-                <p className="text-sm">{notif.message}</p>
+                <p className="text-sm ">{notif.message}</p>
                 {/* Link displayed only for main stock reorder notifications */}
                 {notif.type === "main" && (
                   <Link

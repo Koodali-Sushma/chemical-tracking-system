@@ -2,7 +2,7 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import dbConnect from "@/db/connect";
 import ChemicalOrderRequest from "@/db/models/ChemicalOrderRequest";
-import SignOutButton from "@/components/SignOutButton";
+
 import AdminOrderTable from "./AdminOrderTable";
 
 export default async function AdminChemicalOrdersPage() {
@@ -44,7 +44,6 @@ export default async function AdminChemicalOrdersPage() {
             technicians.
           </p>
         </div>
-        <SignOutButton />
       </div>
 
       <AdminOrderTable orders={serializedOrders} />

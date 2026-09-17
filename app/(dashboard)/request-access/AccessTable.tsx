@@ -50,59 +50,59 @@ export default function AccessTable({
   };
 
   return (
-    <div className="overflow-x-auto bg-white rounded-lg shadow border border-gray-200">
-      <table className="w-full text-left border-collapse">
-        <thead className="bg-gray-100 border-b border-gray-200 text-gray-700 text-sm uppercase">
-          <tr>
-            <th className="p-4 font-semibold border-r border-gray-200">
-              Chemical
-            </th>
-            <th className="p-4 font-semibold text-center">Access Request</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-gray-200 text-sm">
-          {chemicals.map((chem) => {
-            const hasAccess = ownedSet.has(chem.formula);
-            const status = requestMap.get(chem.formula);
-            const isPending = status === "pending";
-            const isLoading = loadingFormula === chem.formula;
+    <div className="bg-slate-800/80 border border-slate-700 rounded-2xl shadow-xl overflow-hidden">
+      <div className="overflow-x-auto">
+        <table className="w-full text-left border-collapse">
+          <thead>
+            <tr className="bg-slate-900/80 border-b border-slate-700 text-xs font-bold uppercase tracking-wider text-slate-400">
+              <th className="p-4">Chemical</th>
+              <th className="p-4 text-center">Access Request</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-slate-700/60 text-sm">
+            {chemicals.map((chem) => {
+              const hasAccess = ownedSet.has(chem.formula);
+              const status = requestMap.get(chem.formula);
+              const isPending = status === "pending";
+              const isLoading = loadingFormula === chem.formula;
 
-            return (
-              <tr key={chem._id} className="hover:bg-gray-50 transition">
-                <td className="p-4 font-medium text-gray-900 border-r border-gray-200">
-                  {chem.name}{" "}
-                  <span className="text-gray-500 font-normal">
-                    ({chem.formula})
-                  </span>
-                </td>
-                <td className="p-4 text-center">
-                  {hasAccess ? (
-                    <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold">
-                      Access Granted
+              return (
+                <tr key={chem._id} className="hover:bg-slate-700/30 transition">
+                  <td className="p-4 font-semibold text-white">
+                    {chem.name}{" "}
+                    <span className="text-slate-400 font-normal">
+                      ({chem.formula})
                     </span>
-                  ) : (
-                    <button
-                      onClick={() => handleAction(chem.formula, isPending)}
-                      disabled={isLoading}
-                      className={`px-4 py-1.5 rounded-md text-sm font-medium transition disabled:opacity-50 ${
-                        isPending
-                          ? "bg-red-50 text-red-600 border border-red-200 hover:bg-red-100"
-                          : "bg-blue-600 text-white hover:bg-blue-700"
-                      }`}
-                    >
-                      {isLoading
-                        ? "Processing..."
-                        : isPending
-                          ? "Cancel Request"
-                          : "Request Access"}
-                    </button>
-                  )}
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+                  </td>
+                  <td className="p-4 text-center">
+                    {hasAccess ? (
+                      <span className="px-2.5 py-1 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-lg text-xs font-bold">
+                        Access Granted
+                      </span>
+                    ) : (
+                      <button
+                        onClick={() => handleAction(chem.formula, isPending)}
+                        disabled={isLoading}
+                        className={`px-4 py-2 rounded-xl text-xs font-bold shadow transition active:scale-[0.98] disabled:opacity-50 cursor-pointer ${
+                          isPending
+                            ? "bg-red-500/10 text-red-400 border border-red-500/30 hover:bg-red-500/20"
+                            : "bg-emerald-500 text-slate-950 hover:bg-emerald-600"
+                        }`}
+                      >
+                        {isLoading
+                          ? "Processing..."
+                          : isPending
+                            ? "Cancel Request"
+                            : "Request Access"}
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

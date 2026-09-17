@@ -55,73 +55,78 @@ export default function ReceiveDeliveryTable({
 
   if (orders.length === 0) {
     return (
-      <div className="rounded-lg border border-gray-200 bg-white p-8 text-center text-gray-500 shadow">
+      <div className="bg-slate-800/80 border border-slate-700 rounded-2xl p-8 text-center text-slate-400 shadow-lg">
         No approved deliveries are available.
       </div>
     );
   }
 
   return (
-    <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white shadow">
-      <table className="w-full border-collapse text-left">
-        <thead className="border-b bg-gray-100 text-sm uppercase text-gray-600">
-          <tr>
-            <th className="p-4">Chemical Name</th>
-            <th className="p-4">Chemical Formula</th>
-            <th className="p-4">Chemical Provider</th>
-            <th className="p-4">Requested By</th>
-            <th className="p-4">Received By</th>
-            <th className="p-4">Action</th>
-          </tr>
-        </thead>
+    <div className="bg-slate-800/80 border border-slate-700 rounded-2xl shadow-xl overflow-hidden">
+      <div className="overflow-x-auto">
+        <table className="w-full text-left border-collapse">
+          <thead>
+            <tr className="bg-slate-900/80 border-b border-slate-700 text-xs font-bold uppercase tracking-wider text-slate-400">
+              <th className="p-4">Chemical Name</th>
+              <th className="p-4">Chemical Formula</th>
+              <th className="p-4">Chemical Provider</th>
+              <th className="p-4">Requested By</th>
+              <th className="p-4">Received By</th>
+              <th className="p-4">Action</th>
+            </tr>
+          </thead>
 
-        <tbody className="divide-y divide-gray-200 text-sm">
-          {orders.map((order) => {
-            const isReceived = order.status === "received";
-            const isLoading = loadingId === order._id;
-            const message = messages[order._id];
+          <tbody className="divide-y divide-slate-700/60 text-sm">
+            {orders.map((order) => {
+              const isReceived = order.status === "received";
+              const isLoading = loadingId === order._id;
+              const message = messages[order._id];
 
-            return (
-              <tr key={order._id} className="hover:bg-gray-50">
-                <td className="p-4 font-medium text-gray-900">
-                  {order.chemicalName}
-                </td>
+              return (
+                <tr
+                  key={order._id}
+                  className="hover:bg-slate-700/30 transition"
+                >
+                  <td className="p-4 font-semibold text-white">
+                    {order.chemicalName}
+                  </td>
 
-                <td className="p-4 font-mono text-gray-700">
-                  {order.chemicalFormula}
-                </td>
+                  <td className="p-4 font-mono text-emerald-400">
+                    {order.chemicalFormula}
+                  </td>
 
-                <td className="p-4 text-gray-700">{order.providerName}</td>
+                  <td className="p-4 text-slate-300">{order.providerName}</td>
 
-                <td className="p-4 text-gray-700">{order.requestedBy}</td>
+                  <td className="p-4 text-slate-300">{order.requestedBy}</td>
 
-                <td className="p-4 text-gray-700">
-                  {order.receivedBy || "Not received"}
-                </td>
+                  <td className="p-4 text-slate-300">
+                    {order.receivedBy || "Not received"}
+                  </td>
 
-                <td className="p-4">
-                  <button
-                    type="button"
-                    onClick={() => handleReceive(order._id)}
-                    disabled={isReceived || isLoading}
-                    className="rounded-md bg-green-600 px-4 py-2 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:bg-gray-400"
-                  >
-                    {isReceived
-                      ? "Delivery received"
-                      : isLoading
-                        ? "Processing..."
-                        : "Receive delivery"}
-                  </button>
+                  <td className="p-4">
+                    <button
+                      type="button"
+                      onClick={() => handleReceive(order._id)}
+                      disabled={isReceived || isLoading}
+                      className="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 disabled:cursor-not-allowed text-slate-950 font-bold rounded-xl shadow transition active:scale-[0.98] cursor-pointer text-xs"
+                    >
+                      {isReceived
+                        ? "Delivery received"
+                        : isLoading
+                          ? "Processing..."
+                          : "Receive delivery"}
+                    </button>
 
-                  {message && (
-                    <p className="mt-2 text-xs text-green-600">{message}</p>
-                  )}
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+                    {message && (
+                      <p className="mt-2 text-xs text-emerald-400">{message}</p>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

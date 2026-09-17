@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   approveChemicalOrder,
   rejectChemicalOrder,
@@ -87,6 +87,31 @@ export default function AdminOrderTable({ orders }: AdminOrderTableProps) {
       </div>
     );
   }
+  const formatDate = (value: string) => {
+    const date = new Date(value);
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+
+    const day = String(date.getUTCDate()).padStart(2, "0");
+    const month = months[date.getUTCMonth()];
+    const year = date.getUTCFullYear();
+    const hours = String(date.getUTCHours()).padStart(2, "0");
+    const minutes = String(date.getUTCMinutes()).padStart(2, "0");
+
+    return `${day} ${month} ${year} at ${hours}:${minutes}`;
+  };
 
   return (
     <div className="bg-slate-800/80 border border-slate-700 rounded-2xl shadow-xl overflow-hidden">
@@ -117,7 +142,8 @@ export default function AdminOrderTable({ orders }: AdminOrderTableProps) {
                   className="hover:bg-slate-700/30 transition"
                 >
                   <td className="p-4 text-slate-300 text-xs font-mono">
-                    {new Date(order.createdAt).toLocaleString()}
+                    {/* Display the date in a more readable format (to avoid hydration error)*/}
+                    {formatDate(order.createdAt)}
                   </td>
                   <td className="p-4 font-semibold text-white">
                     {order.chemicalName}
@@ -167,8 +193,8 @@ export default function AdminOrderTable({ orders }: AdminOrderTableProps) {
                           </button>
                         </div>
                       ) : (
-                        <span className="text-xs text-slate-500 italic">
-                          Resolved
+                        <span className="text-xs text-center text-slate-500 italic">
+                          -
                         </span>
                       )}
 
