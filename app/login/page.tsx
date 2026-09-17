@@ -52,7 +52,7 @@ export default function LoginPage() {
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
-      <div className="w-full max-w-md p-8 bg-white border rounded-lg shadow-sm">
+      <div className="w-full max-w-md p-8 bg-gray-600 border text-green-400 rounded-lg shadow-sm">
         <h1 className="text-2xl font-bold mb-6 text-center">
           Lab System Login
         </h1>
@@ -65,7 +65,7 @@ export default function LoginPage() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-white mb-1">
               Email
             </label>
             <input
@@ -79,7 +79,7 @@ export default function LoginPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-white mb-1">
               Password
             </label>
             <input

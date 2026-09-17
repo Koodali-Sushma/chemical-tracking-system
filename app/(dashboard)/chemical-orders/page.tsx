@@ -4,7 +4,7 @@ import dbConnect from "@/db/connect";
 import Chemical from "@/db/models/Chemical";
 import ChemicalProvider from "@/db/models/ChemicalProvider";
 import ChemicalOrderRequest from "@/db/models/ChemicalOrderRequest";
-import SignOutButton from "@/components/SignOutButton";
+
 import ChemicalOrderTable from "./ChemicalOrderTable";
 
 export default async function ChemicalOrdersPage() {
@@ -69,7 +69,6 @@ export default async function ChemicalOrdersPage() {
             Manage low-stock orders for verified laboratory suppliers
           </p>
         </div>
-        <SignOutButton />
       </div>
 
       <ChemicalOrderTable chemicals={serializedChemicals} />

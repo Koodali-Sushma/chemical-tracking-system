@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { createChemicalOrder } from "@/app/(dashboard)/actions/chemicalOrders";
 
 interface ChemicalOrderRow {
-  _id: string;
+  _id: string; // Chemical ID
+  orderId?: string; // Active ChemicalOrderRequest ID (if any)
   name: string;
   formula: string;
   mainStock: number;
@@ -97,7 +98,7 @@ export default function ChemicalOrderTable({
                       {chem.mainStock}L
                     </span>
                   </td>
-                  <td className="p-4">
+                  <td className="p-4 text-slate-300">
                     {hasProvider ? (
                       chem.providerName
                     ) : (
@@ -110,22 +111,21 @@ export default function ChemicalOrderTable({
                     {hasProvider ? chem.providerEmail : "—"}
                   </td>
                   <td className="p-4 text-right">
+                    {" "}
                     <div className="flex flex-col items-end space-y-1">
                       {hasProvider ? (
                         status === "pending" ? (
-                          <button
-                            disabled
-                            className="px-4 py-2 bg-yellow-500/20 border border-yellow-500/30 text-yellow-300 font-bold rounded-xl text-xs cursor-not-allowed"
-                          >
+                          <p className="px-4 py-2 bg-yellow-500/20 border border-yellow-500/30 text-yellow-300 font-bold rounded-xl text-xs cursor-not-allowed">
                             Order requested
-                          </button>
-                        ) : status === "approved" || status === "received" ? (
-                          <button
-                            disabled
-                            className="px-4 py-2 bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 font-bold rounded-xl text-xs cursor-not-allowed"
-                          >
-                            Order placed
-                          </button>
+                          </p>
+                        ) : status === "approved" ? (
+                          <p className="px-4 py-2 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-bold rounded-xl shadow transition active:scale-[0.98] cursor-pointer text-xs">
+                            Order approved
+                          </p>
+                        ) : status === "received" ? (
+                          <p className="px-4 py-2 bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 font-bold rounded-xl text-xs cursor-not-allowed">
+                            Order received
+                          </p>
                         ) : (
                           <button
                             onClick={() => handleOrder(chem)}
@@ -137,7 +137,7 @@ export default function ChemicalOrderTable({
                         )
                       ) : (
                         <span className="text-xs text-red-400 font-semibold block max-w-[220px] text-right">
-                          No active provider is configured for this chemical.
+                          No active provider assigned!
                         </span>
                       )}
 
