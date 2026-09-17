@@ -92,7 +92,7 @@ export default async function NotificationsPage() {
                 >
                   {notif.message}
                 </p>
-                {/* Link displayed only for main stock reorder notifications */}
+
                 {notif.type === "main" && (
                   <Link
                     href="/chemical-orders"

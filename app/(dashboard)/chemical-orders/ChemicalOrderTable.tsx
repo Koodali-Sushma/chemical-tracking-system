@@ -4,8 +4,8 @@ import { useState } from "react";
 import { createChemicalOrder } from "@/app/(dashboard)/actions/chemicalOrders";
 
 interface ChemicalOrderRow {
-  _id: string; // Chemical ID
-  orderId?: string; // Active ChemicalOrderRequest ID (if any)
+  _id: string;
+  orderId?: string;
   name: string;
   formula: string;
   mainStock: number;

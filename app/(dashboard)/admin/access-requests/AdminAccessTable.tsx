@@ -90,7 +90,6 @@ export default function AdminAccessTable({
                     {req.formula}
                   </td>
                   <td className="p-4">
-                    {/* Status Badge Column */}
                     <span
                       className={`px-2.5 py-0.5 text-xs font-semibold rounded-full uppercase ${
                         req.status === "approved"
@@ -104,7 +103,6 @@ export default function AdminAccessTable({
                     </span>
                   </td>
                   <td className="p-4 text-right">
-                    {/* Actions Column */}
                     {req.status === "pending" ? (
                       <div className="flex items-center justify-center gap-2">
                         <button

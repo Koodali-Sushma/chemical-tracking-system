@@ -2,7 +2,6 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import dbConnect from "@/db/connect";
 import ChemicalOrderRequest from "@/db/models/ChemicalOrderRequest";
-
 import AdminOrderTable from "./AdminOrderTable";
 
 export default async function AdminChemicalOrdersPage() {

@@ -142,7 +142,6 @@ export default function AdminOrderTable({ orders }: AdminOrderTableProps) {
                   className="hover:bg-slate-700/30 transition"
                 >
                   <td className="p-4 text-slate-300 text-xs font-mono">
-                    {/* Display the date in a more readable format (to avoid hydration error)*/}
                     {formatDate(order.createdAt)}
                   </td>
                   <td className="p-4 font-semibold text-white">
