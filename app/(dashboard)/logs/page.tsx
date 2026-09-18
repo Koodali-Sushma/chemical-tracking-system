@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import dbConnect from "@/db/connect";
 import DispenseLog from "@/db/DispenseLog";
+import { formatNumber } from "@/lib/formatNumber";
 
 export default async function UsageReportPage() {
   const session = await auth();
@@ -71,7 +72,7 @@ export default async function UsageReportPage() {
                       {log.chemicalFormula}
                     </td>
                     <td className="p-4 font-bold text-slate-200">
-                      {log.amountDrawn} L
+                      {formatNumber(log.amountDrawn)} L
                     </td>
                   </tr>
                 ))}

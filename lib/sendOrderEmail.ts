@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer";
-
+import { formatNumber } from "./formatNumber";
 type OrderEmailData = {
   providerEmail: string;
   adminEmail: string;
@@ -30,6 +30,7 @@ export async function sendChemicalOrderEmail({
   if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
     throw new Error("SMTP environment variables are not configured.");
   }
+  const formattedQuantity = formatNumber(quantity);
   await transporter.sendMail({
     from: process.env.SMTP_FROM || process.env.SMTP_USER,
     to: providerEmail,
@@ -42,7 +43,7 @@ export async function sendChemicalOrderEmail({
       "",
       `• Chemical Name: ${chemicalName}`,
       `• Formula: ${chemicalFormula}`,
-      `• Quantity: ${quantity}L`,
+      `• Quantity: ${formattedQuantity}L`,
       `• Approved By: ${adminEmail}`,
       "",
       "Please process and dispatch this shipment at your earliest convenience.",
@@ -60,7 +61,7 @@ export async function sendChemicalOrderEmail({
         <ul style="list-style-type: none; padding: 0; background-color: #f8fafc; padding: 15px; border-radius: 6px; border: 1px solid #e2e8f0;">
           <li style="margin-bottom: 8px;"><strong>Chemical Name:</strong> ${chemicalName}</li>
           <li style="margin-bottom: 8px;"><strong>Formula:</strong> ${chemicalFormula}</li>
-          <li style="margin-bottom: 8px;"><strong>Quantity:</strong> ${quantity}L</li>
+          <li style="margin-bottom: 8px;"><strong>Quantity:</strong> ${formattedQuantity}L</li>
           <li><strong>Approved By:</strong> <a href="mailto:${adminEmail}" style="color: #2563eb; text-decoration: none;">${adminEmail}</a></li>
         </ul>
 

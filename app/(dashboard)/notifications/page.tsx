@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import dbConnect from "@/db/connect";
 import Chemical from "@/db/models/Chemical";
 import Link from "next/link";
+import { formatNumber } from "@/lib/formatNumber";
 
 export default async function NotificationsPage() {
   const session = await auth();
@@ -29,7 +30,7 @@ export default async function NotificationsPage() {
       notifications.push({
         id: `${chem.formula}-node`,
         type: "node",
-        message: `Action Required: Node stock for ${chem.name} (${chem.formula}) is critically low at ${chem.nodeStock}L. Please refill node from main stocks available.`,
+        message: `Action Required: Node stock for ${chem.name} (${chem.formula}) is critically low at ${formatNumber(chem.nodeStock)}L. Please refill node from main stocks available.`,
         priority: "high",
       });
     }
@@ -38,7 +39,7 @@ export default async function NotificationsPage() {
       notifications.push({
         id: `${chem.formula}-main`,
         type: "main",
-        message: `Reorder Warning: Main stock for ${chem.name} (${chem.formula}) has fallen to ${chem.mainStock}L. Reminder to order stock and request approval from admin.`,
+        message: `Reorder Warning: Main stock for ${chem.name} (${chem.formula}) has fallen to ${formatNumber(chem.mainStock)}L. Reminder to order stock and request approval from admin.`,
         priority: "medium",
       });
     }

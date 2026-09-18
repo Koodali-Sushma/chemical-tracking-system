@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
+import { formatNumber } from "@/lib/formatNumber";
 
 interface ChemicalItem {
   _id: string;
@@ -15,7 +16,6 @@ interface SimulatorClientProps {
   chemicals: ChemicalItem[];
   role: string;
 }
-const formatLiters = (value: number) => Number(value.toFixed(3)).toString();
 
 export default function SimulatorClient({
   chemicals,
@@ -214,8 +214,8 @@ export default function SimulatorClient({
                   >
                     <div className="flex items-end justify-center space-x-1 relative w-full h-64 bg-slate-950/50 rounded-2xl border border-slate-700/60 p-6">
                       <div className="absolute top-4 left-4 bg-slate-800/90 border border-slate-600 text-emerald-300 font-extrabold text-xs px-2.5 py-1.5 rounded-xl shadow-md z-30">
-                        Stock: {formatLiters(chemStockLiters)}L /{" "}
-                        {formatLiters(chemMaxCapacity)}L
+                        Stock: {formatNumber(chemStockLiters)}L /{" "}
+                        {formatNumber(chemMaxCapacity)}L
                       </div>
 
                       <div className="relative flex flex-col items-center">
@@ -272,7 +272,7 @@ export default function SimulatorClient({
                             style={{ height: `${cupPercentage}%` }}
                           >
                             <span className="absolute bottom-0.5 text-slate-950 font-bold text-[8px] bg-white/90 px-0.5 rounded scale-90">
-                              {cupContentMl.toFixed(1)} ml
+                              {formatNumber(cupContentMl)} ml
                             </span>
                           </div>
                         </div>
@@ -292,7 +292,7 @@ export default function SimulatorClient({
                 Target Dispense Volume
               </span>
               <span className="text-emerald-400 font-bold">
-                {targetVolume.toFixed(1)} ml
+                {formatNumber(targetVolume)} ml
               </span>
             </div>
 

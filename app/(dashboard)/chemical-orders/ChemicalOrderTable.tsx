@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { createChemicalOrder } from "@/app/(dashboard)/actions/chemicalOrders";
+import { formatNumber } from "@/lib/formatNumber";
 
 interface ChemicalOrderRow {
   _id: string;
@@ -95,7 +96,7 @@ export default function ChemicalOrderTable({
                   </td>
                   <td className="p-4">
                     <span className="px-2.5 py-1 bg-red-500/10 text-red-400 border border-red-500/20 rounded-lg font-bold text-xs">
-                      {chem.mainStock}L
+                      {formatNumber(chem.mainStock)}L
                     </span>
                   </td>
                   <td className="p-4 text-slate-300">

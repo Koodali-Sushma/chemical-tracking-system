@@ -3,6 +3,7 @@ import { auth } from "@/auth";
 import dbConnect from "@/db/connect";
 import Chemical from "@/db/models/Chemical";
 import RefillLog from "@/db/models/RefillLog";
+import { formatNumber } from "@/lib/formatNumber";
 
 export async function POST(request: Request) {
   try {
@@ -87,7 +88,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       success: true,
-      message: `Node refilled by ${refillAmount}L successfully.`,
+      message: `Node refilled by ${formatNumber(refillAmount)}L successfully.`,
       nodeStock: chemical.nodeStock,
       mainStock: chemical.mainStock,
     });
