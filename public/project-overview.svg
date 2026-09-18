@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+	<title id="title">Chemical Tracking System overview</title>
+	<desc id="desc">Overview of authentication, role-based workflows, inventory, ordering, delivery, simulation, and notifications.</desc>
+	<defs>
+		<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+			<stop offset="0" stop-color="#071a18"/>
+			<stop offset="1" stop-color="#1d2633"/>
+		</linearGradient>
+		<filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+			<feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#000" flood-opacity=".3"/>
+		</filter>
+		<marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+			<path d="M0 0L10 5L0 10Z" fill="#6ee7b7"/>
+		</marker>
+		<style>
+			.title { font: 700 42px Arial, sans-serif; fill: #f8fafc; }
+			.subtitle { font: 400 18px Arial, sans-serif; fill: #a7f3d0; }
+			.section { font: 700 14px Arial, sans-serif; fill: #6ee7b7; letter-spacing: 2px; }
+			.card-title { font: 700 19px Arial, sans-serif; fill: #f8fafc; }
+			.copy { font: 400 14px Arial, sans-serif; fill: #e2e8f0; }
+			.role-title { font: 700 17px Arial, sans-serif; fill: #ffffff; }
+			.number { font: 700 16px Arial, sans-serif; fill: #052e2b; }
+			.small { font: 700 12px Arial, sans-serif; fill: #99f6e4; }
+		</style>
+	</defs>
+
+	<rect width="1600" height="900" fill="url(#bg)"/>
+	<circle cx="1450" cy="80" r="190" fill="#34d399" opacity=".08"/>
+	<circle cx="100" cy="820" r="220" fill="#22d3ee" opacity=".06"/>
+
+	<text x="90" y="82" class="section">SYSTEM OVERVIEW</text>
+	<text x="90" y="135" class="title">Chemical Tracking System</text>
+	<text x="90" y="171" class="subtitle">A connected workflow for safer inventory, controlled access, and measurable laboratory usage.</text>
+
+	<g filter="url(#shadow)">
+		<rect x="90" y="220" width="250" height="150" rx="18" fill="#dffaf1" stroke="#6ee7b7" stroke-width="2"/>
+		<circle cx="135" cy="265" r="23" fill="#34d399"/>
+		<text x="129" y="271" class="number">1</text>
+		<text x="175" y="263" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#0f172a">Secure sign in</text>
+		<text x="115" y="305" font-family="Arial, sans-serif" font-size="14" fill="#1e293b">NextAuth session and</text>
+		<text x="115" y="326" font-family="Arial, sans-serif" font-size="14" fill="#1e293b">role-based permissions.</text>
+		<rect x="115" y="344" width="104" height="8" rx="4" fill="#059669"/>
+		<rect x="225" y="344" width="80" height="8" rx="4" fill="#0891b2"/>
+	</g>
+	<path d="M350 295H425" stroke="#6ee7b7" stroke-width="3" marker-end="url(#arrow)"/>
+
+	<g filter="url(#shadow)">
+		<rect x="440" y="220" width="310" height="150" rx="18" fill="#123b37" stroke="#2dd4bf" stroke-opacity=".55"/>
+		<circle cx="485" cy="265" r="23" fill="#5eead4"/>
+		<text x="479" y="271" class="number">2</text>
+		<text x="525" y="263" class="card-title">Role-based workspace</text>
+		<text x="465" y="305" class="copy">One system, three focused experiences:</text>
+		<text x="465" y="330" class="small">ADMIN / SCIENTIST / LAB TECHNICIAN</text>
+	</g>
+	<path d="M760 295H835" stroke="#6ee7b7" stroke-width="3" marker-end="url(#arrow)"/>
+
+	<g filter="url(#shadow)">
+		<rect x="850" y="220" width="660" height="150" rx="18" fill="#102a38" stroke="#22d3ee" stroke-opacity=".55"/>
+		<text x="880" y="258" class="section">CORE DATA</text>
+		<text x="880" y="296" class="card-title">Chemical inventory as the source of truth</text>
+		<text x="880" y="326" class="copy">Main stock | Node stock | Providers | Access records | Activity logs</text>
+		<rect x="880" y="344" width="515" height="8" rx="4" fill="#164e63"/>
+		<rect x="880" y="344" width="330" height="8" rx="4" fill="#22d3ee"/>
+	</g>
+
+	<text x="90" y="432" class="section">ROLE WORKFLOWS</text>
+
+	<g filter="url(#shadow)">
+		<rect x="90" y="465" width="440" height="245" rx="18" fill="#172554" stroke="#818cf8" stroke-opacity=".65"/>
+		<rect x="90" y="465" width="8" height="245" rx="4" fill="#818cf8"/>
+		<text x="125" y="515" class="role-title">ADMIN</text>
+		<text x="125" y="548" class="card-title">Control and approval</text>
+		<text x="125" y="586" class="copy">Review scientist access requests</text>
+		<text x="125" y="612" class="copy">Approve or reject chemical orders</text>
+		<text x="125" y="638" class="copy">Monitor inventory and stock levels</text>
+	</g>
+
+	<g filter="url(#shadow)">
+		<rect x="580" y="465" width="440" height="245" rx="18" fill="#123b37" stroke="#34d399" stroke-opacity=".65"/>
+		<rect x="580" y="465" width="8" height="245" rx="4" fill="#34d399"/>
+		<text x="615" y="515" class="role-title">SCIENTIST</text>
+		<text x="615" y="548" class="card-title">Access and experiment</text>
+		<text x="615" y="586" class="copy">Request access to restricted chemicals</text>
+		<text x="615" y="612" class="copy">Use approved compounds in the simulator</text>
+		<text x="615" y="638" class="copy">Track dispense history and usage reports</text>
+	</g>
+
+	<g filter="url(#shadow)">
+		<rect x="1070" y="465" width="440" height="245" rx="18" fill="#3b2516" stroke="#fbbf24" stroke-opacity=".7"/>
+		<rect x="1070" y="465" width="8" height="245" rx="4" fill="#fbbf24"/>
+		<text x="1105" y="515" class="role-title">LAB TECHNICIAN</text>
+		<text x="1105" y="548" class="card-title">Replenish and coordinate</text>
+		<text x="1105" y="586" class="copy">Receive approved provider deliveries</text>
+		<text x="1105" y="612" class="copy">Refill node stock from main stock</text>
+		<text x="1105" y="638" class="copy">Respond to low-stock notifications</text>
+	</g>
+
+	<path d="M310 720V790H1290V720" fill="none" stroke="#6ee7b7" stroke-width="2" stroke-dasharray="8 8"/>
+	<path d="M800 790V825" stroke="#6ee7b7" stroke-width="3" marker-end="url(#arrow)"/>
+	<g filter="url(#shadow)">
+		<rect x="330" y="825" width="940" height="48" rx="24" fill="#0f3b37" stroke="#34d399" stroke-opacity=".6"/>
+		<text x="800" y="855" text-anchor="middle" class="subtitle">Order - approve - deliver - receive - refill - dispense - monitor</text>
+	</g>
+</svg>
