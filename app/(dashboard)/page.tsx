@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import dbConnect from "@/db/connect";
 import Chemical from "@/db/models/Chemical";
+import { formatNumber } from "@/lib/formatNumber";
 
 export default async function InventoryPage() {
   const session = await auth();
@@ -62,12 +63,12 @@ export default async function InventoryPage() {
                 <td
                   className={`p-4 font-medium border-r border-gray-200 ${chem.mainStock < 5 ? "text-red-400 font-semibold" : "text-slate-100"}`}
                 >
-                  {chem.mainStock} {chem.unit}
+                  {formatNumber(chem.mainStock)} {chem.unit}
                 </td>
                 <td
                   className={`p-4 font-medium border-r border-gray-200 ${chem.nodeStock < 1 ? "text-red-400 font-semibold" : "text-slate-100"}`}
                 >
-                  {chem.nodeStock} {chem.unit}
+                  {formatNumber(chem.nodeStock)} {chem.unit}
                 </td>
               </tr>
             ))}

@@ -5,6 +5,7 @@ import {
   approveChemicalOrder,
   rejectChemicalOrder,
 } from "@/app/(dashboard)/actions/chemicalOrders";
+import { formatNumber } from "@/lib/formatNumber";
 
 interface AdminOrderRow {
   _id: string;
@@ -155,7 +156,7 @@ export default function AdminOrderTable({ orders }: AdminOrderTableProps) {
                     {order.requestedBy}
                   </td>
                   <td className="p-4 font-bold text-slate-200">
-                    {order.requestedAmount}L
+                    {formatNumber(order.requestedAmount)}L
                   </td>
                   <td className="p-4">
                     <span
