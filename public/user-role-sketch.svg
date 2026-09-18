@@ -1,0 +1,155 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" role="img" aria-labelledby="title desc">
+  <title id="title">Chemical Tracking System user roles</title>
+  <desc id="desc">Sketch-style representation of the Admin, Scientist, and Lab Technician features.</desc>
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fffdf5"/>
+      <stop offset="1" stop-color="#effaf6"/>
+    </linearGradient>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="9" flood-color="#0f172a" flood-opacity=".16"/>
+    </filter>
+    <style>
+      .headline { font: 700 42px "Comic Sans MS", "Bradley Hand", cursive; fill: #17324d; }
+      .subhead { font: 400 18px "Comic Sans MS", "Bradley Hand", cursive; fill: #536577; }
+      .role { font: 700 28px "Comic Sans MS", "Bradley Hand", cursive; fill: #17324d; }
+      .feature { font: 700 18px "Comic Sans MS", "Bradley Hand", cursive; fill: #17324d; }
+      .copy { font: 400 16px "Comic Sans MS", "Bradley Hand", cursive; fill: #536577; }
+      .label { font: 700 13px Arial, sans-serif; fill: #ffffff; letter-spacing: 1.5px; }
+      .step { font: 700 14px Arial, sans-serif; fill: #17324d; }
+      .sketch { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="1000" fill="url(#paper)"/>
+  <path d="M70 115C350 104 600 124 850 112S1300 104 1530 117" class="sketch" stroke="#34a88a" stroke-width="3" opacity=".65"/>
+  <path d="M75 121C370 110 610 130 850 118S1300 110 1525 123" class="sketch" stroke="#34a88a" stroke-width="1.5" opacity=".45"/>
+  <text x="80" y="75" class="headline">Who uses the Chemical Tracking System?</text>
+  <text x="82" y="103" class="subhead">Three roles, three focused workspaces, one shared chemical inventory.</text>
+
+  <!-- Admin lane -->
+  <g filter="url(#softShadow)">
+    <rect x="70" y="165" width="465" height="700" rx="26" fill="#eef0ff" stroke="#6f78d8" stroke-width="3"/>
+    <path d="M79 184C190 170 395 177 526 188" class="sketch" stroke="#969cf0" stroke-width="2"/>
+    <rect x="100" y="195" width="116" height="30" rx="15" fill="#5963c7" transform="rotate(-2 100 195)"/>
+    <text x="158" y="216" text-anchor="middle" class="label">USER 01</text>
+    <text x="100" y="280" class="role">ADMIN</text>
+    <text x="100" y="310" class="copy">Keeps the lab controlled.</text>
+
+    <!-- admin clipboard icon -->
+    <rect x="397" y="226" width="66" height="73" rx="8" fill="#c7cbff" stroke="#5963c7" stroke-width="4"/>
+    <rect x="415" y="214" width="30" height="22" rx="8" fill="#969cf0" stroke="#5963c7" stroke-width="4"/>
+    <path d="M412 253h35M412 269h35M412 285h20M447 280l8 8 15-18" class="sketch" stroke="#5963c7" stroke-width="4"/>
+
+    <path d="M105 350H497" class="sketch" stroke="#b4b8ef" stroke-width="2" stroke-dasharray="8 10"/>
+    <text x="100" y="385" class="feature">01  Access requests</text>
+    <text x="100" y="410" class="copy">Reviews and grants chemical access.</text>
+    <path d="M105 430C205 423 390 436 495 428" class="sketch" stroke="#9da4ec" stroke-width="2"/>
+
+    <text x="100" y="475" class="feature">02  Order request approval</text>
+    <text x="100" y="500" class="copy">Approves or rejects stock orders.</text>
+    <path d="M105 520C220 512 385 526 495 518" class="sketch" stroke="#9da4ec" stroke-width="2"/>
+
+    <text x="100" y="565" class="feature">03  Review Stock</text>
+    <text x="100" y="590" class="copy">Monitors main and node stock.</text>
+    <path d="M105 610C210 603 390 616 495 608" class="sketch" stroke="#9da4ec" stroke-width="2"/>
+
+    <text x="100" y="655" class="feature">04  Automated provider email</text>
+    <text x="100" y="680" class="copy">Sends approved orders to the chemical provider.</text>
+
+    <rect x="100" y="725" width="390" height="84" rx="18" fill="#dfe2ff" stroke="#969cf0" stroke-width="2"/>
+    <text x="125" y="758" class="step">DECIDES</text>
+    <text x="125" y="786" class="copy">Who can use what, and when</text>
+    <path d="M410 745l35 22-35 22" class="sketch" stroke="#5963c7" stroke-width="5"/>
+  </g>
+
+  <!-- Scientist lane -->
+  <g filter="url(#softShadow)">
+    <rect x="568" y="165" width="465" height="700" rx="26" fill="#e8faf3" stroke="#34a88a" stroke-width="3"/>
+    <path d="M577 184C690 170 900 178 1024 188" class="sketch" stroke="#74d8b8" stroke-width="2"/>
+    <rect x="598" y="195" width="116" height="30" rx="15" fill="#168a6a" transform="rotate(2 598 195)"/>
+    <text x="656" y="216" text-anchor="middle" class="label">USER 02</text>
+    <text x="598" y="280" class="role">SCIENTIST</text>
+    <text x="598" y="310" class="copy">Turns access into insight.</text>
+
+    <!-- scientist flask icon -->
+    <path d="M914 218h32M920 218v24l-23 42c-4 8 2 17 11 17h44c9 0 15-9 11-17l-23-42v-24" fill="#baf0dc" stroke="#168a6a" stroke-width="4"/>
+    <path d="M903 269h54M910 282c12-8 24 8 36 0" class="sketch" stroke="#168a6a" stroke-width="3"/>
+    <circle cx="945" cy="250" r="5" fill="#34a88a"/>
+    <circle cx="956" cy="238" r="3" fill="#34a88a"/>
+
+    <path d="M603 350H995" class="sketch" stroke="#9bdfc4" stroke-width="2" stroke-dasharray="8 10"/>
+    <text x="598" y="385" class="feature">01  Request access</text>
+    <text x="598" y="410" class="copy">Requests permission for restricted chemicals.</text>
+    <path d="M603 430C703 423 888 436 993 428" class="sketch" stroke="#74d8b8" stroke-width="2"/>
+
+    <text x="598" y="475" class="feature">02  Run experiments</text>
+    <text x="598" y="500" class="copy">Dispenses approved compounds in the simulator.</text>
+    <path d="M603 520C718 512 883 526 993 518" class="sketch" stroke="#74d8b8" stroke-width="2"/>
+
+    <text x="598" y="565" class="feature">03  Review usage</text>
+    <text x="598" y="590" class="copy">Tracks dispense history in usage reports.</text>
+    <path d="M603 610C708 603 888 616 993 608" class="sketch" stroke="#74d8b8" stroke-width="2"/>
+
+    <rect x="598" y="705" width="390" height="104" rx="18" fill="#d4f6e7" stroke="#74d8b8" stroke-width="2"/>
+    <text x="623" y="742" class="step">DISCOVERS</text>
+    <text x="623" y="771" class="copy">Safely, with only approved access</text>
+    <path d="M908 730l35 25-35 25" class="sketch" stroke="#168a6a" stroke-width="5"/>
+  </g>
+
+  <!-- Lab technician lane -->
+  <g filter="url(#softShadow)">
+    <rect x="1066" y="165" width="465" height="700" rx="26" fill="#fff4df" stroke="#e0a23a" stroke-width="3"/>
+    <path d="M1075 184C1190 170 1400 178 1522 188" class="sketch" stroke="#efc66d" stroke-width="2"/>
+    <rect x="1096" y="195" width="116" height="30" rx="15" fill="#b7770d" transform="rotate(-2 1096 195)"/>
+    <text x="1154" y="216" text-anchor="middle" class="label">USER 03</text>
+    <text x="1096" y="280" class="role">LAB TECHNICIAN</text>
+    <text x="1096" y="310" class="copy">Keeps the lab moving.</text>
+
+    <!-- chemical lab technician icon: test tube, bubbles, and gear -->
+    <g opacity=".68" transform="translate(1472 263) scale(0.8)">
+      <g fill="#94a3b8" stroke="#64748b" stroke-width="3">
+        <rect x="-7" y="-53" width="14" height="20" rx="2"/>
+        <rect x="-7" y="-53" width="14" height="20" rx="2" transform="rotate(180)"/>
+        <rect x="-7" y="-53" width="14" height="20" rx="2" transform="rotate(90)"/>
+        <rect x="-7" y="-53" width="14" height="20" rx="2" transform="rotate(270)"/>
+        <rect x="-7" y="-53" width="14" height="20" rx="2" transform="rotate(45)"/>
+        <rect x="-7" y="-53" width="14" height="20" rx="2" transform="rotate(135)"/>
+        <rect x="-7" y="-53" width="14" height="20" rx="2" transform="rotate(225)"/>
+        <rect x="-7" y="-53" width="14" height="20" rx="2" transform="rotate(315)"/>
+        <circle r="35"/>
+        <circle r="13" fill="#fff4df"/>
+      </g>
+    </g>
+    <path d="M1438 238h24v13l-5 9v34c0 8-6 14-14 14s-14-6-14-14v-34l-5-9v-13h24z" fill="#fff9ec" stroke="#b7770d" stroke-width="4"/>
+    <path d="M1424 238h28M1428 265h28" class="sketch" stroke="#b7770d" stroke-width="3"/>
+    <path d="M1429 282c7-5 14 5 23 0v12c0 5-4 9-10 9h-4c-5 0-9-4-9-9z" fill="#f7c866" stroke="#b7770d" stroke-width="3"/>
+    <circle cx="1420" cy="230" r="5" fill="#f7c866" stroke="#b7770d" stroke-width="2"/>
+    <circle cx="1430" cy="211" r="8" fill="#ffe0a1" stroke="#b7770d" stroke-width="3"/>
+    <circle cx="1450" cy="198" r="5" fill="#f7c866" stroke="#b7770d" stroke-width="2"/>
+
+    <path d="M1101 350H1493" class="sketch" stroke="#f0ca7a" stroke-width="2" stroke-dasharray="8 10"/>
+    <text x="1096" y="385" class="feature">01  Order request</text>
+    <text x="1096" y="410" class="copy">Sends low-stock needs for admin approval.</text>
+    <path d="M1101 430C1201 423 1386 436 1491 428" class="sketch" stroke="#efc66d" stroke-width="2"/>
+
+    <text x="1096" y="475" class="feature">02  Refill node stock</text>
+    <text x="1096" y="500" class="copy">Moves main stock into the simulator node.</text>
+    <path d="M1101 520C1216 512 1381 526 1491 518" class="sketch" stroke="#efc66d" stroke-width="2"/>
+
+    <text x="1096" y="565" class="feature">03  Respond to alerts</text>
+    <text x="1096" y="590" class="copy">Acts on low-stock notifications.</text>
+    <path d="M1101 610C1206 603 1386 616 1491 608" class="sketch" stroke="#efc66d" stroke-width="2"/>
+
+    <text x="1096" y="655" class="feature">04  Receive delivery</text>
+    <text x="1096" y="680" class="copy">Confirms approved chemical shipments.</text>
+
+    <rect x="1096" y="725" width="390" height="84" rx="18" fill="#ffebc3" stroke="#efc66d" stroke-width="2"/>
+    <text x="1121" y="758" class="step">REPLENISHES</text>
+    <text x="1121" y="786" class="copy">The supply chain behind every test</text>
+    <path d="M1406 745l35 22-35 22" class="sketch" stroke="#b7770d" stroke-width="5"/>
+  </g>
+
+  <path d="M110 910C420 890 1180 930 1490 910" class="sketch" stroke="#34a88a" stroke-width="3"/>
+  <text x="800" y="950" text-anchor="middle" class="subhead">Shared inventory  •  controlled access  •  accountable usage</text>
+</svg>
