@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import dbConnect from "@/db/connect";
 import User from "@/db/models/User";
+import { findDemoUser } from "@/lib/demoUsers";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
@@ -20,7 +21,20 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
           const email = String(credentials.email).toLowerCase().trim();
 
-          const user = await User.findOne({ email });
+          let user = await User.findOne({ email });
+
+          // Provision demo accounts on first use so demo login always works.
+          if (!user) {
+            const demo = findDemoUser(email, String(credentials.password));
+            if (demo) {
+              user = await User.create({
+                name: demo.name,
+                email: demo.email,
+                password: demo.password,
+                role: demo.role,
+              });
+            }
+          }
 
           if (!user) {
             return null;
