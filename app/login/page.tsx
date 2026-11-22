@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { DEMO_USERS } from "@/lib/demoUsers";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -10,17 +11,17 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [demoRole, setDemoRole] = useState("");
 
-  const handleSubmit = async (e: React.SyntheticEvent) => {
-    e.preventDefault();
+  const login = async (loginEmail: string, loginPassword: string) => {
     setLoading(true);
     setError("");
 
     try {
       const result = await signIn("credentials", {
         redirect: false,
-        email,
-        password,
+        email: loginEmail,
+        password: loginPassword,
       });
 
       if (result?.error) {
@@ -47,6 +48,22 @@ export default function LoginPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleSubmit = async (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    await login(email, password);
+  };
+
+  const handleDemoLogin = async () => {
+    const demo = DEMO_USERS.find((u) => u.role === demoRole);
+    if (!demo) {
+      setError("Please select a demo role");
+      return;
+    }
+    setEmail(demo.email);
+    setPassword(demo.password);
+    await login(demo.email, demo.password);
   };
 
   return (
@@ -99,6 +116,42 @@ export default function LoginPage() {
             {loading ? "Logging in..." : "Sign In"}
           </button>
         </form>
+
+        <div className="my-6 flex items-center gap-3 text-sm text-gray-300">
+          <div className="h-px flex-1 bg-gray-400" />
+          or try a demo account
+          <div className="h-px flex-1 bg-gray-400" />
+        </div>
+
+        <div className="space-y-3">
+          <label
+            htmlFor="demo-role"
+            className="block text-sm font-medium text-white"
+          >
+            Demo Login
+          </label>
+          <select
+            id="demo-role"
+            value={demoRole}
+            onChange={(e) => setDemoRole(e.target.value)}
+            className="w-full p-2 border rounded bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">Select a role…</option>
+            {DEMO_USERS.map((u) => (
+              <option key={u.role} value={u.role}>
+                {u.label}
+              </option>
+            ))}
+          </select>
+          <button
+            type="button"
+            onClick={handleDemoLogin}
+            disabled={loading || !demoRole}
+            className="w-full py-2 bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50 font-medium"
+          >
+            {loading ? "Logging in..." : "Demo Login"}
+          </button>
+        </div>
       </div>
     </main>
   );
